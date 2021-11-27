@@ -135,8 +135,6 @@ public class PlayerMovement : MonoBehaviour
         } else {
             movementChangeLocked = false;
         }
-
-        Debug.Log(boostTimer);
     }
 
 

@@ -11,6 +11,7 @@ TagManager:
   - Legs
   - MainShip
   - MainCannon
+  - Enemy
   layers:
   - Default
   - TransparentFX

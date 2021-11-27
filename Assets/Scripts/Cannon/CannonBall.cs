@@ -8,6 +8,9 @@ public class CannonBall : MonoBehaviour
     public float shootingForce;
     Rigidbody rb;
 
+    [SerializeField]
+    int damage = 10;
+
     float ttl = 10f;
 
     void Start() {
@@ -21,5 +24,14 @@ public class CannonBall : MonoBehaviour
         if (ttl < 0) {
             Destroy(gameObject);
         }
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag == "Enemy") {
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            enemy.hp -= damage;
+        }
+
+        Destroy(gameObject);
     }
 }

@@ -140,11 +140,15 @@ PrefabInstance:
       objectReference: {fileID: 1350301226}
     - target: {fileID: 786284899959791626, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_VersionIndex
-      value: 38
+      value: 59
       objectReference: {fileID: 0}
     - target: {fileID: 786284900383554749, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: speed
-      value: 4
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 786284900383554749, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
+      propertyPath: slowSpeed
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 786284900383554754, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_RootOrder
@@ -152,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 786284900383554754, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -71.7
+      value: -16.9
       objectReference: {fileID: 0}
     - target: {fileID: 786284900383554754, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_LocalPosition.y
@@ -160,7 +164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 786284900383554754, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 132.3
+      value: 160.5
       objectReference: {fileID: 0}
     - target: {fileID: 786284900383554754, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_LocalRotation.w
@@ -192,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 786284900383554759, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_Name
-      value: Enemy (6)
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 786284900383554759, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_IsActive
@@ -204,7 +208,7 @@ PrefabInstance:
       objectReference: {fileID: 1731652186}
     - target: {fileID: 786284900526720057, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_VersionIndex
-      value: 41
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 786284900526720063, guid: 5816fc76494ca4b4594d3d5d97d5c936, type: 3}
       propertyPath: m_Mesh
@@ -1114,7 +1118,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-30842
+  m_Name: pb_Mesh-1286
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2034,7 +2038,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-30844
+  m_Name: pb_Mesh-1298
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3199,5 +3203,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cannonBallPrefab: {fileID: 3129382161711431687, guid: 053afa60139fc434d8f1a2f1d9d9b845, type: 3}
   cannonBallSpawnPoint: {fileID: 271558933}
-  shootingForce: 900
+  shootingForce: 600
   shootingDelay: 0.5
