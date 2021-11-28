@@ -12,6 +12,7 @@ TagManager:
   - MainShip
   - MainCannon
   - Enemy
+  - Sun
   layers:
   - Default
   - TransparentFX
