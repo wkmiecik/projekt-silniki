@@ -4,73 +4,69 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Objects
     GameObject boat;
     GameObject legs;
+    GameObject ship;
     CapsuleCollider legsCollider;
-    GameObject mainShip;
-
     GameObject usedCannon;
     Cannon usedCannonScript;
+    Rigidbody rb;
 
+
+    // Input
     float rot, acc;
     Vector3 mouse = Vector3.zero;
     Ray castPoint;
+    Vector3 mouseWorldPosition;
 
-    Rigidbody rb;
 
+    // Movement modes changing
     float movementChangeDelayTimer = 0f;
     bool movementChangeLocked = false;
 
-    Vector3 mouseWorldPosition;
 
-    // aaaa
-    enum MovementMode {
-        swimming,
-        walking,
-        cannonShooting
-    }
-    MovementMode currentMovementMode = MovementMode.swimming;
-
-    [SerializeField]
-    float normalResistanceForce = 15f;
-    [SerializeField]
-    float boostResistanceForce = 10f;
+    // Movement
+    [SerializeField] PlayerVars pv;
     float resistanceForce;
-    [SerializeField]
-    float boostLength = 10f;
     float boostTimer;
-    [SerializeField]
-    float boostRecoveryDelay = 1f;
     float boostRecoveryDelayTimer;
 
+
+    // Spawn Points
+    GameObject playerSpawnPoint;
+    GameObject boatSpawnPoint;
 
 
     void Start() {
         boat = GameObject.FindGameObjectWithTag("Boat");
         legs = transform.Find("Legs").gameObject;
+        ship = GameObject.FindGameObjectWithTag("MainShip");
         legsCollider = legs.GetComponent<CapsuleCollider>();
-        mainShip = GameObject.FindGameObjectWithTag("MainShip");
         rb = gameObject.GetComponent<Rigidbody>();
 
-        boostTimer = boostLength;
-        boostRecoveryDelayTimer = boostRecoveryDelay;
+        playerSpawnPoint = ship.transform.Find("Player spawn point").gameObject;
+        boatSpawnPoint = ship.transform.Find("Boat spawn point").gameObject;
+
+        boostTimer = pv.boostLength;
+        boostRecoveryDelayTimer = pv.boostRecoveryDelay;
     }
 
     void FixedUpdate() {
         RaycastHit hit;
         float mouseDistSqr;
 
-        switch (currentMovementMode) {
-            case MovementMode.swimming:
-                rb.AddRelativeForce(Vector3.left * acc * 150000 * Time.fixedDeltaTime);
-                rb.AddRelativeTorque(Vector3.up * rot * 350000 * Time.fixedDeltaTime);
+        switch (pv.currentMovementMode) {
+            case PlayerVars.MovementMode.swimming:
+                rb.AddRelativeForce(Vector3.forward * acc * 150000 * Time.fixedDeltaTime);
+                rb.AddRelativeTorque(Vector3.up * rot * 3000000 * Time.fixedDeltaTime);
 
                 // Speed limit
                 rb.AddForce(-rb.velocity * 150 * resistanceForce * Time.fixedDeltaTime);
                 break;
 
 
-            case MovementMode.walking:
+            case PlayerVars.MovementMode.walking:
                 mouse = Input.mousePosition;
                 castPoint = Camera.main.ScreenPointToRay(mouse);
                 if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, LayerMask.GetMask("MouseCollider"))) {
@@ -89,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
 
-            case MovementMode.cannonShooting:
+            case PlayerVars.MovementMode.cannonShooting:
                 mouse = Input.mousePosition;
                 castPoint = Camera.main.ScreenPointToRay(mouse);
                 if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, LayerMask.GetMask("MouseCollider"))) {
@@ -107,10 +103,11 @@ public class PlayerMovement : MonoBehaviour
                 rb.angularVelocity = Vector3.zero;
                 transform.position = usedCannon.transform.position;
                 transform.rotation = usedCannon.transform.rotation;
-                transform.Translate((Vector3.back * 3) + (Vector3.up * .4f), usedCannon.transform);
+                transform.Translate((Vector3.back * 1.6f) + (Vector3.up * .4f), usedCannon.transform);
                 break;
         }
     }
+
 
     private void Update() {
         // Read inputs
@@ -118,16 +115,16 @@ public class PlayerMovement : MonoBehaviour
         acc = Input.GetAxis("Vertical");
 
         if (Input.GetKey(KeyCode.LeftShift) && boostTimer > 0) {
-            resistanceForce = boostResistanceForce;
+            resistanceForce = pv.boostResistanceForce;
             boostTimer -= Time.deltaTime;
-            boostRecoveryDelayTimer = boostRecoveryDelay;
+            boostRecoveryDelayTimer = pv.boostRecoveryDelay;
         } else {
             if (boostRecoveryDelayTimer > 0) {
                 boostRecoveryDelayTimer -= Time.deltaTime;
             } else {
-                if (boostTimer < boostLength) boostTimer += Time.deltaTime;
+                if (boostTimer < pv.boostLength) boostTimer += Time.deltaTime;
             }
-            resistanceForce = normalResistanceForce;
+            resistanceForce = pv.normalResistanceForce;
         }
 
         // Delay between changing movement style
@@ -140,17 +137,17 @@ public class PlayerMovement : MonoBehaviour
 
 
     private void OnTriggerStay(Collider other) {
-        if (Input.GetKey(KeyCode.Q) && other.tag == "MainShip" && currentMovementMode != MovementMode.cannonShooting && !movementChangeLocked) {
+        if (Input.GetKey(KeyCode.Q) && other.tag == "MainShip" && pv.currentMovementMode != PlayerVars.MovementMode.cannonShooting && !movementChangeLocked) {
             movementChangeLocked = true;
             movementChangeDelayTimer = 1f;
-            if (currentMovementMode == MovementMode.swimming) {
-                SwitchMovementMode(MovementMode.walking, true);
+            if (pv.currentMovementMode == PlayerVars.MovementMode.swimming) {
+                SwitchMovementMode(PlayerVars.MovementMode.walking, true);
             } else {
-                SwitchMovementMode(MovementMode.swimming, true);
+                SwitchMovementMode(PlayerVars.MovementMode.swimming, true);
             }
         }
 
-        if (Input.GetKey(KeyCode.E) && other.tag == "MainCannon" && currentMovementMode == MovementMode.walking && !movementChangeLocked) {
+        if (Input.GetKey(KeyCode.E) && other.tag == "MainCannon" && pv.currentMovementMode == PlayerVars.MovementMode.walking && !movementChangeLocked) {
             movementChangeLocked = true;
             movementChangeDelayTimer = 1f;
             legsCollider.enabled = false;
@@ -160,10 +157,10 @@ public class PlayerMovement : MonoBehaviour
             usedCannonScript = usedCannon.GetComponent<Cannon>();
             usedCannonScript.enabled = true;
 
-            SwitchMovementMode(MovementMode.cannonShooting, true);
+            SwitchMovementMode(PlayerVars.MovementMode.cannonShooting, true);
         }
 
-        if (Input.GetKey(KeyCode.E) && currentMovementMode == MovementMode.cannonShooting && !movementChangeLocked) {
+        if (Input.GetKey(KeyCode.E) && pv.currentMovementMode == PlayerVars.MovementMode.cannonShooting && !movementChangeLocked) {
             movementChangeLocked = true;
             movementChangeDelayTimer = 1f;
             legsCollider.enabled = true;
@@ -171,39 +168,39 @@ public class PlayerMovement : MonoBehaviour
             // Deactivate Cannon
             usedCannonScript.enabled = false;
 
-            SwitchMovementMode(MovementMode.walking, false);
+            SwitchMovementMode(PlayerVars.MovementMode.walking, false);
         }
     }
 
-    private void SwitchMovementMode(MovementMode movementMode, bool updatePosition) {
+
+    private void SwitchMovementMode(PlayerVars.MovementMode movementMode, bool updatePosition) {
         switch (movementMode) {
-            case MovementMode.swimming:
-                currentMovementMode = MovementMode.swimming;
+            case PlayerVars.MovementMode.swimming:
+                pv.currentMovementMode = PlayerVars.MovementMode.swimming;
                 rb.velocity = Vector3.zero;
                 if (updatePosition) {
-                    gameObject.transform.position = mainShip.transform.position;
-                    gameObject.transform.Translate(Vector3.back * 6, mainShip.transform);
-                    gameObject.transform.rotation = mainShip.transform.rotation;
+                    gameObject.transform.position = boatSpawnPoint.transform.position;
+                    gameObject.transform.rotation = boatSpawnPoint.transform.rotation;
                 }
                 legs.SetActive(false);
                 boat.SetActive(true);
                 break;
 
 
-            case MovementMode.walking:
-                currentMovementMode = MovementMode.walking;
+            case PlayerVars.MovementMode.walking:
+                pv.currentMovementMode = PlayerVars.MovementMode.walking;
                 rb.velocity = Vector3.zero;
                 if (updatePosition) {
-                    gameObject.transform.position = mainShip.transform.position;
-                    gameObject.transform.Translate(Vector3.up * 3);
+                    gameObject.transform.position = playerSpawnPoint.transform.position;
+                    gameObject.transform.rotation = playerSpawnPoint.transform.rotation;
                 }
                 boat.SetActive(false);
                 legs.SetActive(true);
                 break;
 
 
-            case MovementMode.cannonShooting:
-                currentMovementMode = MovementMode.cannonShooting;
+            case PlayerVars.MovementMode.cannonShooting:
+                pv.currentMovementMode = PlayerVars.MovementMode.cannonShooting;
                 break;
         }
     }
