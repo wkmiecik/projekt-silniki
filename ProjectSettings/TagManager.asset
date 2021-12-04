@@ -13,6 +13,7 @@ TagManager:
   - MainCannon
   - Enemy
   - Sun
+  - Spawner
   layers:
   - Default
   - TransparentFX

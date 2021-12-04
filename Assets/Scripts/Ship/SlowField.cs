@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class SlowField : MonoBehaviour
 {
-    [SerializeField]
-    GameObject target;
+    [SerializeField] GameObject target;
 
     void Update()
     {

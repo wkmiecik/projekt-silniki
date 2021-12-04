@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]
-    string targetTag;
+    [SerializeField] string targetTag;
     GameObject target;
     Rigidbody rb;
 
-    [SerializeField]
-    float speed = 10;
-    [SerializeField]
-    float slowSpeed = 5;
-    [HideInInspector]
-    public bool slowed = false;
+    [SerializeField] float speed = 10;
+    [SerializeField] float slowSpeed = 5;
+    [HideInInspector] public bool slowed = false;
 
-    [SerializeField]
-    public int hp = 100;
+    [SerializeField] public int hp = 100;
 
     void Start()
     {

@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-    [HideInInspector]
-    public float shootingForce;
+    [HideInInspector] public float shootingForce;
     Rigidbody rb;
 
-    [SerializeField]
-    int damage = 10;
+    [SerializeField] int damage = 10;
 
     float ttl = 10f;
 
