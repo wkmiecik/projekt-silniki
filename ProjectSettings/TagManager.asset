@@ -5,8 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - chunk
-  - PlayerSwimming
-  - PlayerWalking
   - Boat
   - Legs
   - MainShip
@@ -14,6 +12,7 @@ TagManager:
   - Enemy
   - Sun
   - Spawner
+  - Cannon
   layers:
   - Default
   - TransparentFX
@@ -26,8 +25,8 @@ TagManager:
   - Enemy
   - Ground
   - MouseCollider
-  - 
-  - 
+  - OceanFloor
+  - CannonBall
   - 
   - 
   - 

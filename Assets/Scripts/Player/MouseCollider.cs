@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class MouseCollider : MonoBehaviour
 {
-    GameObject player;
+    // Access to Objects
+    ObjectManager objM;
 
     void Start()
     {
-        player = GameObject.Find("Player");
+        // Access to Objects
+        objM = ObjectManager.Instance;
     }
 
     void FixedUpdate()
     {
-        transform.position = player.transform.position;
+        transform.position = objM.player.transform.position;
     }
 }

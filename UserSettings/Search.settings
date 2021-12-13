@@ -10,6 +10,9 @@ scopes = {
 	"last_search.DD2EEDCB" = "probuild"
 	"OpenInspectorPreview.DD2EEDCB" = "0"
 	"currentGroup.DD2EEDCB" = "all"
+	"last_search.F4034D60" = ""
+	"OpenInspectorPreview.F4034D60" = "0"
+	"currentGroup.F4034D60" = "scene"
 }
 providers = {
 	expression = {

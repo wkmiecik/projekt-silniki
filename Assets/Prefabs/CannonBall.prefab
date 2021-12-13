@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3129382161713769301}
   - component: {fileID: 3129382161713769306}
   - component: {fileID: 3129382161713769300}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CannonBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,4 +128,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootingForce: 0
-  damage: 10
+  damage: 40

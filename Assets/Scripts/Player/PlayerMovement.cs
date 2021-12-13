@@ -4,50 +4,40 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Objects
-    GameObject boat;
-    GameObject legs;
-    GameObject ship;
-    CapsuleCollider legsCollider;
-    GameObject usedCannon;
-    Cannon usedCannonScript;
-    Rigidbody rb;
+    // Player variables
+    PlayerVars pv;
 
+    // Objects
+    ObjectManager objM;
+    public GameObject boat;
+    public GameObject legs;
+    [HideInInspector] public CapsuleCollider legsCollider;
+    [HideInInspector] public Rigidbody rb;
 
     // Input
     float rot, acc;
     Vector3 mouse = Vector3.zero;
     Ray castPoint;
-    Vector3 mouseWorldPosition;
-
 
     // Movement modes changing
-    float movementChangeDelayTimer = 0f;
     bool movementChangeLocked = false;
 
-
-    // Movement
-    [SerializeField] PlayerVars pv;
-    float resistanceForce;
+    // Movement timers
+    float movementChangeDelayTimer = 0f;
     float boostTimer;
     float boostRecoveryDelayTimer;
 
 
-    // Spawn Points
-    GameObject playerSpawnPoint;
-    GameObject boatSpawnPoint;
-
-
     void Start() {
-        boat = GameObject.FindGameObjectWithTag("Boat");
-        legs = transform.Find("Legs").gameObject;
-        ship = GameObject.FindGameObjectWithTag("MainShip");
+        // Player variables
+        pv = PlayerVars.Instance;
+
+        // Objects
+        objM = ObjectManager.Instance;
         legsCollider = legs.GetComponent<CapsuleCollider>();
-        rb = gameObject.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
 
-        playerSpawnPoint = ship.transform.Find("Player spawn point").gameObject;
-        boatSpawnPoint = ship.transform.Find("Boat spawn point").gameObject;
-
+        // Movement timers
         boostTimer = pv.boostLength;
         boostRecoveryDelayTimer = pv.boostRecoveryDelay;
     }
@@ -57,53 +47,60 @@ public class PlayerMovement : MonoBehaviour
         float mouseDistSqr;
 
         switch (pv.currentMovementMode) {
+            // If swimming in boat
             case PlayerVars.MovementMode.swimming:
+                // Basic movement forces
                 rb.AddRelativeForce(Vector3.forward * acc * 150000 * Time.fixedDeltaTime);
-                rb.AddRelativeTorque(Vector3.up * rot * 3000000 * Time.fixedDeltaTime);
+                rb.AddRelativeTorque(Vector3.up * rot * 100000 * Time.fixedDeltaTime);
 
-                // Speed limit
-                rb.AddForce(-rb.velocity * 150 * resistanceForce * Time.fixedDeltaTime);
+                // Limit speed using resistance force in opposite movement direction
+                rb.AddForce(-rb.velocity * 150 * /*resistanceForce**/ Time.fixedDeltaTime);
+
+                // Limit rotation so the boat doesnt flip
+                // Force should probably depend on rotation!!!!
+                Quaternion rotation = Quaternion.FromToRotation(transform.up, Vector3.up);
+                rb.AddTorque(new Vector3(rotation.x, rotation.y, rotation.z) * pv.rotationLimitFactor);
                 break;
 
-
-            case PlayerVars.MovementMode.walking:
+            //  If walking on a ship
+            case PlayerVars.MovementMode.walkingOnShip:
                 mouse = Input.mousePosition;
                 castPoint = Camera.main.ScreenPointToRay(mouse);
                 if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, LayerMask.GetMask("MouseCollider"))) {
-                    mouseWorldPosition = hit.point;
-                    mouseWorldPosition.y = transform.position.y;
+                    pv.mouseWorldPosition = hit.point;
+                    pv.mouseWorldPosition.y = transform.position.y;
 
-                    mouseDistSqr = (mouseWorldPosition - transform.position).sqrMagnitude;
+                    mouseDistSqr = (pv.mouseWorldPosition - transform.position).sqrMagnitude;
 
                     if (mouseDistSqr > 3) {
-                        transform.LookAt(mouseWorldPosition);
+                        transform.LookAt(pv.mouseWorldPosition);
                     }
                 }
 
-                rb.AddForce((Vector3.left + Vector3.forward) * acc * 150000 * Time.fixedDeltaTime);
-                rb.AddForce((Vector3.forward + Vector3.right) * rot * 150000 * Time.fixedDeltaTime);
+                rb.AddForce((Vector3.left + Vector3.forward) * acc * 600000 * Time.fixedDeltaTime);
+                rb.AddForce((Vector3.forward + Vector3.right) * rot * 300000 * Time.fixedDeltaTime);
                 break;
 
-
+            // If shooting cannon
             case PlayerVars.MovementMode.cannonShooting:
                 mouse = Input.mousePosition;
                 castPoint = Camera.main.ScreenPointToRay(mouse);
                 if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, LayerMask.GetMask("MouseCollider"))) {
-                    mouseWorldPosition = hit.point;
-                    mouseWorldPosition.y = usedCannon.transform.position.y;
+                    pv.mouseWorldPosition = hit.point;
+                    pv.mouseWorldPosition.y = pv.usedCannon.transform.position.y;
 
-                    mouseDistSqr = (mouseWorldPosition - transform.position).sqrMagnitude;
+                    mouseDistSqr = (pv.mouseWorldPosition - transform.position).sqrMagnitude;
 
                     if (mouseDistSqr > 3) {
-                        usedCannon.transform.LookAt(mouseWorldPosition);
+                        pv.usedCannon.transform.LookAt(pv.mouseWorldPosition);
                     }
                 }
 
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
-                transform.position = usedCannon.transform.position;
-                transform.rotation = usedCannon.transform.rotation;
-                transform.Translate((Vector3.back * 1.6f) + (Vector3.up * .4f), usedCannon.transform);
+                transform.position = pv.usedCannon.transform.position;
+                transform.rotation = pv.usedCannon.transform.rotation;
+                transform.Translate((Vector3.back * 1.6f) + (Vector3.up * .4f), pv.usedCannon.transform);
                 break;
         }
     }
@@ -115,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
         acc = Input.GetAxis("Vertical");
 
         if (Input.GetKey(KeyCode.LeftShift) && boostTimer > 0) {
-            resistanceForce = pv.boostResistanceForce;
+            pv.resistanceForce = pv.boostResistanceForce;
             boostTimer -= Time.deltaTime;
             boostRecoveryDelayTimer = pv.boostRecoveryDelay;
         } else {
@@ -124,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
             } else {
                 if (boostTimer < pv.boostLength) boostTimer += Time.deltaTime;
             }
-            resistanceForce = pv.normalResistanceForce;
+            pv.resistanceForce = pv.normalResistanceForce;
         }
 
         // Delay between changing movement style
@@ -141,21 +138,21 @@ public class PlayerMovement : MonoBehaviour
             movementChangeLocked = true;
             movementChangeDelayTimer = 1f;
             if (pv.currentMovementMode == PlayerVars.MovementMode.swimming) {
-                SwitchMovementMode(PlayerVars.MovementMode.walking, true);
+                SwitchMovementMode(PlayerVars.MovementMode.walkingOnShip, true);
             } else {
                 SwitchMovementMode(PlayerVars.MovementMode.swimming, true);
             }
         }
 
-        if (Input.GetKey(KeyCode.E) && other.tag == "MainCannon" && pv.currentMovementMode == PlayerVars.MovementMode.walking && !movementChangeLocked) {
+        if (Input.GetKey(KeyCode.E) && other.tag == "Cannon" && pv.currentMovementMode == PlayerVars.MovementMode.walkingOnShip && !movementChangeLocked) {
             movementChangeLocked = true;
             movementChangeDelayTimer = 1f;
             legsCollider.enabled = false;
 
             // Activate Cannon
-            usedCannon = other.gameObject;
-            usedCannonScript = usedCannon.GetComponent<Cannon>();
-            usedCannonScript.enabled = true;
+            pv.usedCannon = other.gameObject;
+            var usedCannonScript = pv.usedCannon.GetComponent<Cannon>();
+            usedCannonScript.active = true;
 
             SwitchMovementMode(PlayerVars.MovementMode.cannonShooting, true);
         }
@@ -166,9 +163,10 @@ public class PlayerMovement : MonoBehaviour
             legsCollider.enabled = true;
 
             // Deactivate Cannon
-            usedCannonScript.enabled = false;
+            var usedCannonScript = pv.usedCannon.GetComponent<Cannon>();
+            usedCannonScript.active = false;
 
-            SwitchMovementMode(PlayerVars.MovementMode.walking, false);
+            SwitchMovementMode(PlayerVars.MovementMode.walkingOnShip, false);
         }
     }
 
@@ -179,20 +177,20 @@ public class PlayerMovement : MonoBehaviour
                 pv.currentMovementMode = PlayerVars.MovementMode.swimming;
                 rb.velocity = Vector3.zero;
                 if (updatePosition) {
-                    gameObject.transform.position = boatSpawnPoint.transform.position;
-                    gameObject.transform.rotation = boatSpawnPoint.transform.rotation;
+                    gameObject.transform.position = objM.ship.boatSpawnPoint.transform.position;
+                    gameObject.transform.rotation = objM.ship.boatSpawnPoint.transform.rotation;
                 }
                 legs.SetActive(false);
                 boat.SetActive(true);
                 break;
 
 
-            case PlayerVars.MovementMode.walking:
-                pv.currentMovementMode = PlayerVars.MovementMode.walking;
+            case PlayerVars.MovementMode.walkingOnShip:
+                pv.currentMovementMode = PlayerVars.MovementMode.walkingOnShip;
                 rb.velocity = Vector3.zero;
                 if (updatePosition) {
-                    gameObject.transform.position = playerSpawnPoint.transform.position;
-                    gameObject.transform.rotation = playerSpawnPoint.transform.rotation;
+                    gameObject.transform.position = objM.ship.playerSpawnPoint.transform.position;
+                    gameObject.transform.rotation = objM.ship.playerSpawnPoint.transform.rotation;
                 }
                 boat.SetActive(false);
                 legs.SetActive(true);

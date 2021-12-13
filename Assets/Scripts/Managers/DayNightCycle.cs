@@ -5,30 +5,38 @@ using DG.Tweening;
 
 public class DayNightCycle : MonoBehaviour
 {
-    GameObject sunObj;
+    // Access to Objects
+    ObjectManager objM;
 
+    // Cycle variables
+    [SerializeField] bool paused = false;
     [SerializeField] float cycleLength = 200;
     [SerializeField] float timeScale = 1;
-    [SerializeField] bool paused = false;
 
+    // Cycle tween
     [HideInInspector] public Tween cycle;
 
     void Start() {
-        sunObj = GameObject.FindGameObjectWithTag("Sun");
-
-        cycle = sunObj.transform.DORotate(new Vector3(360f, 0, 0), cycleLength, RotateMode.FastBeyond360)
+        // Access to Objects
+        objM = ObjectManager.Instance;
+        
+        // Create cycle tween
+        cycle = objM.sun.transform.DORotate(new Vector3(360f, 0, 0), cycleLength, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
             .SetLoops(-1)
             .SetRelative();
     }
 
+
     void Update() {
+        // Pause tween
         if (paused) {
             cycle.Pause();
         } else {
             cycle.Play();
         }
 
+        // Set timescale
         cycle.timeScale = timeScale;
     }
 }

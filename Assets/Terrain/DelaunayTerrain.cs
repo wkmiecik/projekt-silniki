@@ -40,24 +40,27 @@ public class DelaunayTerrain : MonoBehaviour {
     // The delaunay mesh
     private TriangleNet.Mesh mesh = null;
 
+    [SerializeField] bool regenerate = false;
+
     void Start()
     {
         transform.position = new Vector3(-xsize/2, 0, -ysize/2);
         Generate();
     }
 
-    //void Update() {
-    //    // Generate new terrain on E pressed
-    //    if (Input.GetKeyDown(KeyCode.E)) {
-    //        // Find all chunks and delete them
-    //        GameObject[] chunks = GameObject.FindGameObjectsWithTag("chunk");
-    //        foreach (GameObject chunk in chunks) {
-    //            Destroy(chunk);
-    //        }
-    //        // Generate new terrain
-    //        Generate();
-    //    }
-    //}
+    void Update() {
+        // Generate new terrain on E pressed
+        if (regenerate) {
+            regenerate = false;
+            // Find all chunks and delete them
+            GameObject[] chunks = GameObject.FindGameObjectsWithTag("chunk");
+            foreach (GameObject chunk in chunks) {
+                Destroy(chunk);
+            }
+            // Generate new terrain
+            Generate();
+        }
+    }
 
     public virtual void Generate() {
         UnityEngine.Random.InitState(0);
