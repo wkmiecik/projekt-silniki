@@ -19,4 +19,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     // Wave spawner
     public WaveSpawner waveSpawner;
+
+    // UI manager
+    public UIManager uiManager;
 }
