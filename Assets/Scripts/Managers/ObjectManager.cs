@@ -3,7 +3,7 @@ using UnityEngine;
 public class ObjectManager : Singleton<ObjectManager>
 {
     // Player objects
-    public PlayerMovement player;
+    public Player player;
 
     // Ship objects
     public MainShip ship;
@@ -18,7 +18,7 @@ public class ObjectManager : Singleton<ObjectManager>
     public DayNightCycle dayNightCycle;
 
     // Wave spawner
-    public WaveSpawner waveSpawner;
+    public WavesManager wavesManager;
 
     // UI manager
     public UIManager uiManager;

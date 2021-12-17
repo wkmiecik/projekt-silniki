@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-    [HideInInspector] public float shootingForce;
     Rigidbody rb;
+
+    [HideInInspector] public float shootingForce;
 
     [SerializeField] int damage = 10;
 
-    float ttl = 10f;
+    float destroyTimer = 10f;
 
     void Start() {
         rb = gameObject.GetComponent<Rigidbody>();
-        rb.AddRelativeForce(Vector3.forward * shootingForce, ForceMode.Impulse);
+        rb.AddRelativeForce(Vector3.forward * shootingForce, ForceMode.VelocityChange);
     }
 
     void Update() {
-        ttl -= Time.deltaTime;
+        destroyTimer -= Time.deltaTime;
 
-        if (ttl < 0) {
+        if (destroyTimer < 0) {
             Destroy(gameObject);
         }
     }

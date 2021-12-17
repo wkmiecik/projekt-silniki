@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class MainShip : MonoBehaviour
 {
-    // Access to ship variables
-    ShipVars sv;
-    // Access to player variables
-    PlayerVars pv;
+    // Access to player
+    Player player;
     // Access to ui manager
     UIManager ui;
+
+    // Ship HP
+    public int HP = 100;
 
     // Sails
     public GameObject sails;
@@ -25,21 +26,19 @@ public class MainShip : MonoBehaviour
 
     void Start()
     {
-        // Access to ship variables
-        sv = ShipVars.Instance;
         // Access to player variables
-        pv = PlayerVars.Instance;
+        player = ObjectManager.Instance.player;
         // Access to ui manager
         ui = ObjectManager.Instance.uiManager;
 
         // Set starting hp
-        ui.SetShipHPtext(sv.HP);
+        ui.SetShipHPtext(HP);
     }
 
     void Update()
     {
         // Hide sails if player onboard
-        if (pv.currentMovementMode == PlayerVars.MovementMode.walkingOnShip || pv.currentMovementMode == PlayerVars.MovementMode.cannonShooting) {
+        if (player.currentMovementMode == Player.MovementMode.walkingOnShip || player.currentMovementMode == Player.MovementMode.cannonShooting) {
             sails.SetActive(false);
         } else {
             sails.SetActive(true);
@@ -49,17 +48,16 @@ public class MainShip : MonoBehaviour
 
     public void getHit(int dmg) {
         // Subtract dmg from hp
-        sv.HP -= dmg;
+        HP -= dmg;
 
         // Check if still alive
-        if (sv.HP <= 0) {
+        if (HP <= 0) {
             // Ded
             ui.SetShipHPtext(0);
-            Debug.Log("DEAD");
-            Debug.Break(); // Dying just pauses editor for now
+            Debug.Log("DEAD"); // Dying just prints DEAD for now
         } else {
             // If still alive update hp text
-            ui.SetShipHPtext(sv.HP);
+            ui.SetShipHPtext(HP);
         }
     }
 }

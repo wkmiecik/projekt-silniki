@@ -5,8 +5,8 @@ using DG.Tweening;
 
 public class DayNightCycle : MonoBehaviour
 {
-    // Access to Objects
-    ObjectManager objM;
+    // Access to sun light
+    Light sun;
 
     // Cycle variables
     [SerializeField] bool paused = false;
@@ -18,10 +18,10 @@ public class DayNightCycle : MonoBehaviour
 
     void Start() {
         // Access to Objects
-        objM = ObjectManager.Instance;
+        sun = ObjectManager.Instance.sun.GetComponent<Light>();
         
         // Create cycle tween
-        cycle = objM.sun.transform.DORotate(new Vector3(360f, 0, 0), cycleLength, RotateMode.FastBeyond360)
+        cycle = sun.transform.DORotate(new Vector3(360f, 0, 0), cycleLength, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
             .SetLoops(-1)
             .SetRelative();
@@ -37,6 +37,7 @@ public class DayNightCycle : MonoBehaviour
         }
 
         // Set timescale
-        cycle.timeScale = timeScale;
+        Time.timeScale = timeScale;
+        //cycle.timeScale = timeScale;
     }
 }

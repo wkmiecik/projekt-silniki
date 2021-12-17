@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Access to ship
+    // Access to Ship
     MainShip ship;
+
+    // Access to Waves Manager
+    WavesManager wavesManager;
 
     // Target
     Vector3 closestPointOnShip;
@@ -34,6 +37,9 @@ public class Enemy : MonoBehaviour
     {
         // Access to ship
         ship = ObjectManager.Instance.ship;
+
+        // Access to Waves Manager
+        wavesManager = ObjectManager.Instance.wavesManager;
 
         // Rigidbody
         rb = gameObject.GetComponent<Rigidbody>();
@@ -64,7 +70,7 @@ public class Enemy : MonoBehaviour
 
         // Destroy if dead
         if (hp <= 0) {
-            Destroy(gameObject);
+            wavesManager.KillEnemy(gameObject);
         }
     }
 
