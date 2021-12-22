@@ -40,6 +40,12 @@ public class Cannon : MonoBehaviour
     [SerializeField] Color aimMarkerInRangeColor;
     [SerializeField] Color aimMarkerOutOfRangeColor;
 
+    [Header("Angle limits")]
+    [SerializeField] float minVerticalAngle = -5;
+    [SerializeField] float maxVerticalAngle = 15;
+    [SerializeField] float HorizontalRange = 45;
+    Quaternion startingRotation;
+
     private void Start() {
         // Access to Waves Manager
         wavesManager = ObjectManager.Instance.wavesManager;
@@ -60,6 +66,9 @@ public class Cannon : MonoBehaviour
 
         // Set reload timer
         shootingDelayTimer = shootingDelay * .5f;
+
+        // Get starting horizontal rotation
+        startingRotation = transform.rotation;
     }
 
     void Update()
@@ -163,15 +172,31 @@ public class Cannon : MonoBehaviour
 
         float angle0, angle1;
         bool targetInRange = TrajectoryMath.CalculateLaunchAngle(shootingForce, distance, yOffset, -Physics.gravity.y, out angle0, out angle1);
-
         //trajectory.UpdateArc(shootingForce, distance, -Physics.gravity.y, angle1, direction, targetInRange);
 
-        if (!targetInRange)
-            return false;
+        var barrelAngle = angle1 * Mathf.Rad2Deg;
+        var baseAngle = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 0, 0);
 
-        var turretAngle = angle1 * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 0, 0);
-        barrel.localRotation = Quaternion.Euler(0, 0, 0) * Quaternion.AngleAxis(turretAngle, Vector3.left);
+        
+        // Do nothing if target out of cannon range
+        if (!targetInRange) {
+            return false;
+        }
+
+        // Dont rotate base if out of horizontal range
+        var currentRot = baseAngle.eulerAngles;
+        var diff = Mathf.Abs(currentRot.y - startingRotation.eulerAngles.y);
+        if (diff > HorizontalRange && diff < 360 - HorizontalRange) {
+            return false;
+        }
+        transform.localRotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 90, 0);
+
+        // Dont rotate barrel if out of vertical range
+        if (barrelAngle < minVerticalAngle || barrelAngle > maxVerticalAngle) {
+            return false;
+        }
+        barrel.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y - 90, 0) * Quaternion.AngleAxis(barrelAngle, Vector3.left);
+
 
         return true;
     }

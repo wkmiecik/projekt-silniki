@@ -53,20 +53,19 @@ public class Enemy : MonoBehaviour
 
 
     void FixedUpdate() {
-        // Get closest point on ship collision box
-        closestPointOnShip = ship.outsideCollider.ClosestPoint(transform.position);
-
-        // Look towards and go to closest point on ship
-        var lookHere = new Vector3(closestPointOnShip.x, transform.position.y, closestPointOnShip.z);
+        // Look at and go to ship
+        var lookHere = new Vector3(ship.transform.position.x, transform.position.y, ship.transform.position.z);
         transform.LookAt(lookHere);
-        Vector3 force = Vector3.forward * speed * 10000;
-        rb.AddRelativeForce(force * Time.fixedDeltaTime, ForceMode.Force);
 
+        // Set speed
+        Vector3 force = Vector3.forward * speed * 10000;
         // Slow down if in slow field
         if (slowed) {
-            force = Vector3.back * slowSpeed * 10000;
-            rb.AddRelativeForce(force * Time.fixedDeltaTime, ForceMode.Force);
+            force = Vector3.forward * slowSpeed * 10000;
         }
+
+        // Add force
+        rb.AddRelativeForce(force * Time.fixedDeltaTime, ForceMode.Force);
 
         // Destroy if dead
         if (hp <= 0) {

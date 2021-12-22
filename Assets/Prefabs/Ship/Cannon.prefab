@@ -222,6 +222,9 @@ MonoBehaviour:
   aimMarkerRenderer: {fileID: 4519837799635121308}
   aimMarkerInRangeColor: {r: 0.7647059, g: 1, b: 0.5882353, a: 0.39215687}
   aimMarkerOutOfRangeColor: {r: 1, g: 0.5882353, b: 0.5882353, a: 0.39215687}
+  minVerticalAngle: -16
+  maxVerticalAngle: 20
+  HorizontalRange: 40
 --- !u!1 &745757974576423432
 GameObject:
   m_ObjectHideFlags: 0

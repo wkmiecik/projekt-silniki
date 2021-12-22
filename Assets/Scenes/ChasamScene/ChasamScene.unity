@@ -4420,6 +4420,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ship
       objectReference: {fileID: 0}
+    - target: {fileID: 417421906493018062, guid: 33c86e90ba9ad254cb00f263db881702, type: 3}
+      propertyPath: aiSteering
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6414304709039295480, guid: 33c86e90ba9ad254cb00f263db881702, type: 3}
       propertyPath: aiSteering
       value: 1
@@ -6753,7 +6757,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 1613748192}
   m_Follow: {fileID: 1613748192}
   m_Lens:
-    FieldOfView: 80
+    FieldOfView: 90
     OrthographicSize: 60
     NearClipPlane: 1
     FarClipPlane: 500
@@ -12541,7 +12545,7 @@ Camera:
     height: 1
   near clip plane: 1
   far clip plane: 500
-  field of view: 80
+  field of view: 90
   orthographic: 0
   orthographic size: 60
   m_Depth: 0
@@ -13670,14 +13674,6 @@ PrefabInstance:
     - target: {fileID: 8859513301186946550, guid: 714544a26c1268e41bbf2a9dd4489079, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8859513301186946551, guid: 714544a26c1268e41bbf2a9dd4489079, type: 3}
-      propertyPath: m_Size.x
-      value: 1500
-      objectReference: {fileID: 0}
-    - target: {fileID: 8859513301186946551, guid: 714544a26c1268e41bbf2a9dd4489079, type: 3}
-      propertyPath: m_Size.z
-      value: 1500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 714544a26c1268e41bbf2a9dd4489079, type: 3}

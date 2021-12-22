@@ -313,8 +313,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.19
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 1.3032178
+  m_Center: {x: -0, y: 0.11321752, z: -0}
 --- !u!114 &1471006670194615853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,8 +327,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c681dbcabb12046a4d74595a81ea5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
-  slowSpeed: 1
+  speed: 14
+  slowSpeed: 2
   slowed: 0
   hp: 100
   damage: 5
@@ -348,10 +348,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floaters:
   - {fileID: 5450726442283277818}
-  underWaterDrag: 1
-  underWaterAngularDrag: 1
-  airDrag: 1
-  airAngularDrag: 1
+  underWaterDrag: 3
+  underWaterAngularDrag: 3
+  airDrag: 3
+  airAngularDrag: 3
   floatingPower: 60
 --- !u!1 &2122780207067774551
 GameObject:

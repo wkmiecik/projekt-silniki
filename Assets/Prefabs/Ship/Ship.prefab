@@ -3078,10 +3078,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 923654283379336765, guid: 2d734694eddde774e864fa989f14f249, type: 3}
-      propertyPath: aiSteering
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 923654283379336765, guid: 2d734694eddde774e864fa989f14f249, type: 3}
       propertyPath: shootingForce
       value: 25
       objectReference: {fileID: 0}
@@ -3331,10 +3327,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 848820510055256008, guid: 2d734694eddde774e864fa989f14f249, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 923654283379336765, guid: 2d734694eddde774e864fa989f14f249, type: 3}
-      propertyPath: aiSteering
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4408536379000819905, guid: 2d734694eddde774e864fa989f14f249, type: 3}
