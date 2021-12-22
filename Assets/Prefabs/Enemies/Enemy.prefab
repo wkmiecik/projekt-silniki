@@ -327,13 +327,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c681dbcabb12046a4d74595a81ea5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 4
   slowSpeed: 1
   slowed: 0
   hp: 100
   damage: 5
   attackDistance: 5
-  attackDelay: 3
+  attackDelay: 4
 --- !u!114 &4152733948883302014
 MonoBehaviour:
   m_ObjectHideFlags: 0

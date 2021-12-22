@@ -49,7 +49,7 @@ public class CameraController : MonoBehaviour
                 float mouseX = Mathf.Clamp(Camera.main.ScreenToViewportPoint(Input.mousePosition).x, 0, 1);
                 float mouseY = Mathf.Clamp(Camera.main.ScreenToViewportPoint(Input.mousePosition).y, 0, 1);
                 float dist = Vector2.Distance(new Vector2(.5f, .5f), new Vector2(mouseX, mouseY));
-                followPoint.transform.Translate(Vector3.forward * dist * 20, player.usedCannon.transform);
+                followPoint.transform.Translate((player.mouseWorldPosition - player.usedCannon.transform.position).normalized * dist * 25);
                 break;
         }
 

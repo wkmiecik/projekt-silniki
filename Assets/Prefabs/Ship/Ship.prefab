@@ -3081,6 +3081,10 @@ PrefabInstance:
       propertyPath: aiSteering
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 923654283379336765, guid: 2d734694eddde774e864fa989f14f249, type: 3}
+      propertyPath: shootingForce
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d734694eddde774e864fa989f14f249, type: 3}
 --- !u!4 &206070949408450107 stripped
@@ -3331,7 +3335,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 923654283379336765, guid: 2d734694eddde774e864fa989f14f249, type: 3}
       propertyPath: aiSteering
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4408536379000819905, guid: 2d734694eddde774e864fa989f14f249, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.089
+      objectReference: {fileID: 0}
+    - target: {fileID: 4408536379000819905, guid: 2d734694eddde774e864fa989f14f249, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.067
+      objectReference: {fileID: 0}
+    - target: {fileID: 4408536379000819905, guid: 2d734694eddde774e864fa989f14f249, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4408536379000819905, guid: 2d734694eddde774e864fa989f14f249, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4408536379000819905, guid: 2d734694eddde774e864fa989f14f249, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4408536379000819905, guid: 2d734694eddde774e864fa989f14f249, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d734694eddde774e864fa989f14f249, type: 3}

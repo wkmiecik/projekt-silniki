@@ -4420,6 +4420,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ship
       objectReference: {fileID: 0}
+    - target: {fileID: 6414304709039295480, guid: 33c86e90ba9ad254cb00f263db881702, type: 3}
+      propertyPath: aiSteering
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c86e90ba9ad254cb00f263db881702, type: 3}
 --- !u!114 &1172554383 stripped
@@ -4463,7 +4467,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1176221549
 MonoBehaviour:
@@ -6384,7 +6388,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1655170427
 MonoBehaviour:
@@ -13478,9 +13482,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132149128067416}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -41.8, z: 0}
-  m_LocalScale: {x: 67.01, y: 67.01, z: 67.01}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: -21, z: 0}
+  m_LocalScale: {x: 75, y: 50.15, z: 75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -13561,7 +13565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &1711813855669442701
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13666,6 +13670,14 @@ PrefabInstance:
     - target: {fileID: 8859513301186946550, guid: 714544a26c1268e41bbf2a9dd4489079, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8859513301186946551, guid: 714544a26c1268e41bbf2a9dd4489079, type: 3}
+      propertyPath: m_Size.x
+      value: 1500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8859513301186946551, guid: 714544a26c1268e41bbf2a9dd4489079, type: 3}
+      propertyPath: m_Size.z
+      value: 1500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 714544a26c1268e41bbf2a9dd4489079, type: 3}

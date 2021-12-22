@@ -29,6 +29,27 @@ public class OceanManager : MonoBehaviour
     }
 
 
+    public float GetHeightAtPosition(Vector3 position) {
+        float result = 0;
+        float startHeight = 0;
+        RaycastHit hit;
+        Vector3 truePoint;
+        truePoint = position;
+
+        for (int i = 0; i < 4; i++) {
+            if (Physics.Raycast(new Vector3(truePoint.x, 100, truePoint.z), -Vector3.up, out hit, 200f, LayerMask.GetMask("OceanFloor"))) {
+                startHeight = 100 - hit.distance;
+            }
+            Vector3 iter = GetGerstnerAtPositon(new Vector3(truePoint.x, startHeight, truePoint.z));
+            truePoint.x += position.x - iter.x;
+            truePoint.z += position.z - iter.z;
+            result = iter.y;
+        }
+
+        return result;
+    }
+
+
     public Vector3 GetGerstnerAtPositon(Vector3 pos) {
         Vector3 p = new Vector3(pos.x, pos.y, pos.z);
         if (wavesEnabled.x > 0) p += GerstnerWave(waveA, pos);
@@ -38,6 +59,7 @@ public class OceanManager : MonoBehaviour
 
         return p;
     }
+
 
     Vector3 GerstnerWave(Vector4 wave, Vector3 p) {
         float steepness = wave.z;

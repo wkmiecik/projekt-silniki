@@ -5,8 +5,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BuoyantObj : MonoBehaviour {
-    // Access to Objects
-    ObjectManager objM;
+    // Access to ocean manager
+    OceanManager oceanManager;
 
     public Transform[] floaters;
 
@@ -29,8 +29,8 @@ public class BuoyantObj : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        // Access to Objects
-        objM = ObjectManager.Instance;
+        // Access to ocean manager
+        oceanManager = ObjectManager.Instance.oceanManager;
 
         m_Rigidbody = GetComponent<Rigidbody>();
     }
@@ -46,29 +46,9 @@ public class BuoyantObj : MonoBehaviour {
         if (Application.IsPlaying(this)) {
             Gizmos.color = Color.red;
             foreach (var floater in floaters) {
-                Gizmos.DrawSphere(new Vector3(floater.position.x, GetHeightAtPosition(floater.position), floater.position.z), .3f);
+                Gizmos.DrawSphere(new Vector3(floater.position.x, oceanManager.GetHeightAtPosition(floater.position), floater.position.z), .3f);
             }
         }
-    }
-
-    float GetHeightAtPosition(Vector3 position) {
-        float result = 0;
-        float startHeight = 0;
-        RaycastHit hit;
-        Vector3 truePoint;
-        truePoint = position;
-
-        for (int i = 0; i < 4; i++) {
-            if (Physics.Raycast(new Vector3(truePoint.x, 100, truePoint.z), -Vector3.up, out hit, 200f, LayerMask.GetMask("OceanFloor"))) {
-                startHeight = 100 - hit.distance;
-            }
-            Vector3 iter = objM.oceanManager.GetGerstnerAtPositon(new Vector3(truePoint.x, startHeight, truePoint.z));
-            truePoint.x += position.x - iter.x;
-            truePoint.z += position.z - iter.z;
-            result = iter.y;
-        }
-
-        return result;
     }
 
 
@@ -76,7 +56,7 @@ public class BuoyantObj : MonoBehaviour {
         floatersUnderwater = 0;
 
         for (int i = 0; i < floaters.Length; i++) {
-            float difference = floaters[i].position.y - GetHeightAtPosition(floaters[i].position);
+            float difference = floaters[i].position.y - oceanManager.GetHeightAtPosition(floaters[i].position);
 
             if (difference < 0) {
                 m_Rigidbody.AddForceAtPosition(Vector3.up * floatingPower * Mathf.Abs(difference), floaters[i].position + (Vector3.up*2), ForceMode.Acceleration);

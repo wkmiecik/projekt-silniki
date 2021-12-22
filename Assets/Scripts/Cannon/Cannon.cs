@@ -9,10 +9,14 @@ public class Cannon : MonoBehaviour
     // Access to Waves Manager
     WavesManager wavesManager;
 
+    // Access to player
+    Player player;
+
+    // Access to ocean manager
+    OceanManager oceanManager;
+
     public bool playerSteering = false;
     public bool aiSteering = false;
-
-    Vector3 aimingTarget;
 
     [SerializeField] GameObject cannonBallPrefab;
 
@@ -20,78 +24,122 @@ public class Cannon : MonoBehaviour
     Transform cannonBallSpawnPoint;
 
     [SerializeField] float shootingForce = 30f;
+    [SerializeField] float predictionFactor = 30f;
 
     [SerializeField] float shootingDelay = .1f;
-    float shootingTimer = 0;
+    float shootingDelayTimer = 0;
 
     VisualEffect cannonVFX;
     Light cannonLight;
 
-    [SerializeField] Material blankMat;
+    //[SerializeField] CannonballArc trajectory;
+
+    [Header("Aim marker")]
+    [SerializeField] GameObject aimMarkerObject;
+    [SerializeField] MeshRenderer aimMarkerRenderer;
+    [SerializeField] Color aimMarkerInRangeColor;
+    [SerializeField] Color aimMarkerOutOfRangeColor;
 
     private void Start() {
         // Access to Waves Manager
         wavesManager = ObjectManager.Instance.wavesManager;
 
+        // Access to player
+        player = ObjectManager.Instance.player;
+
+        // Access to ocean manager
+        oceanManager = ObjectManager.Instance.oceanManager;
+
+        // Get vfx components
         cannonVFX = GetComponentInChildren<VisualEffect>();
         cannonLight = GetComponentInChildren<Light>();
 
+        // Get barrel and cannonball spawnpoint
         barrel = transform.Find("Barrel");
-        cannonBallSpawnPoint = barrel.Find("SpawnPoint");
+        cannonBallSpawnPoint = barrel.Find("Cannonball Spawn Point");
+
+        // Set reload timer
+        shootingDelayTimer = shootingDelay * .5f;
     }
 
     void Update()
     {
-        // Reload timer counting
-        shootingTimer -= Time.deltaTime;
-
         // If player steering cannon
         if (playerSteering) {
-            // Set aiming target to mouse position
-            aimingTarget = ObjectManager.Instance.player.mouseWorldPosition;
-            Debug.Log(ObjectManager.Instance.player.mouseWorldPosition);
+            // Reload timer counting
+            shootingDelayTimer -= Time.deltaTime;
 
-            // Aim cannon at target
-            AimCannonAtTarget(aimingTarget);
+            // Set aiming target to mouse position
+            var mousePos = player.mouseWorldPosition;
+            var target = new Vector3(mousePos.x, oceanManager.GetHeightAtPosition(mousePos) + 2.5f, mousePos.z);
+
+            // Aim cannon at target and get predicted flight time
+            var inRange = AimCannonAtTarget(target);
 
             // Wait for click and shoot if reloaded
-            if (Input.GetKey(KeyCode.Mouse0) && shootingTimer <= 0) {
+            if (Input.GetKey(KeyCode.Mouse0) && shootingDelayTimer <= 0) {
                 Shoot();
             }
+
+            if (inRange) {
+                // Show aim marker and set its position to mouse
+                aimMarkerObject.transform.position = mousePos;
+                aimMarkerRenderer.sharedMaterial.color = aimMarkerInRangeColor;
+                aimMarkerObject.SetActive(true);
+            }
+            else {
+                // Set marker to diffrent color if out of range
+                aimMarkerObject.transform.position = mousePos;
+                aimMarkerRenderer.sharedMaterial.color = aimMarkerOutOfRangeColor;
+            }
+        } else {
+            // Hide aim marker if not using cannon
+            aimMarkerObject.SetActive(false);
         }
+
 
         // If ai steering cannon
         if (aiSteering) {
             // Check if any enemies alive
             if (wavesManager.enemiesAlive.Count > 0) {
-                // Set aiming target to closest enemy
-                aimingTarget = FindClosestEnemy().transform.position;
+                // Get closest enemy
+                var targetRB = FindClosestEnemy().GetComponent<Rigidbody>();
+                var aimPos = new Vector3(targetRB.position.x, targetRB.position.y + 1.5f, targetRB.position.z);
 
-                // Aim cannon at target
-                bool inRange = AimCannonAtTarget(aimingTarget);
+                // Predict where to aim
+                var dist = (transform.position - targetRB.position).magnitude;
+                var velocity = new Vector3(targetRB.velocity.x, 0, targetRB.velocity.z);
+                var predictedTargetPos = aimPos + (velocity * .2f * dist * predictionFactor);
+
+                // Aim cannon at predicted target positon
+                var inRange = AimCannonAtTarget(predictedTargetPos);
+
 
                 // Shoot if enemy in range and reloaded
-                if (inRange && shootingTimer <= 0) {
-                    Shoot();
+                if (inRange) {
+                    // Reload timer counting
+                    shootingDelayTimer -= Time.deltaTime;
+
+                    if (shootingDelayTimer <= 0) {
+                        Shoot();
+                    }
                 }
             }
         }
 
 
-        //if (playerSteering || aiSteering) {
-        //    if (!IsInvoking("ShootBlank")) {
-        //        InvokeRepeating("ShootBlank", 0, .3f);
-        //    }
-        //} else {
-        //    if (IsInvoking("ShootBlank")) {
-        //        CancelInvoke("ShootBlank");
-        //    }
+        // Show/hide trajectory
+        //if (aiSteering || playerSteering) {
+        //    trajectory.lineRenderer.enabled = true;
+        //}
+        //else {
+        //    trajectory.lineRenderer.enabled = false;
         //}
     }
 
 
     public GameObject FindClosestEnemy() {
-        // Find closest enemy
+        // Find and return closest enemy
         var closest = wavesManager.enemiesAlive[0];
         var closestDist = (transform.position - closest.transform.position).sqrMagnitude;
 
@@ -114,55 +162,38 @@ public class Cannon : MonoBehaviour
         float distance = direction.magnitude;
 
         float angle0, angle1;
-        bool targetInRange = CalculateLaunchAngle(shootingForce, distance, yOffset, Physics.gravity.magnitude, out angle0, out angle1);
+        bool targetInRange = TrajectoryMath.CalculateLaunchAngle(shootingForce, distance, yOffset, -Physics.gravity.y, out angle0, out angle1);
+
+        //trajectory.UpdateArc(shootingForce, distance, -Physics.gravity.y, angle1, direction, targetInRange);
+
         if (!targetInRange)
             return false;
 
-        SetCannonRotation(direction, angle1 * Mathf.Rad2Deg);
-        return true;
-    }
-
-    bool CalculateLaunchAngle(float speed, float distance, float yOffset, float gravity, out float angle0, out float angle1) {
-        angle0 = angle1 = 0;
-
-        float speedSquared = speed * speed;
-
-        float operandA = Mathf.Pow(speed, 4);
-        float operandB = gravity * (gravity * (distance * distance) + (2 * yOffset * speedSquared));
-
-        // Target is not in range
-        if (operandB > operandA)
-            return false;
-
-        float root = Mathf.Sqrt(operandA - operandB);
-
-        angle0 = Mathf.Atan((speedSquared + root) / (gravity * distance));
-        angle1 = Mathf.Atan((speedSquared - root) / (gravity * distance));
-
-        return true;
-    }
-
-    private void SetCannonRotation(Vector3 planarDirection, float turretAngle) {
-        transform.rotation = Quaternion.LookRotation(planarDirection) * Quaternion.Euler(0, 0, 0);
+        var turretAngle = angle1 * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 0, 0);
         barrel.localRotation = Quaternion.Euler(0, 0, 0) * Quaternion.AngleAxis(turretAngle, Vector3.left);
+
+        return true;
     }
 
+    public float PredictFlightTime(Vector3 target) {
+        Vector3 direction = target - cannonBallSpawnPoint.position;
+        float yOffset = direction.y;
+        direction = Math3d.ProjectVectorOnPlane(Vector3.up, direction);
+        float distance = direction.magnitude;
 
+        float angle0, angle1;
+        bool targetInRange = TrajectoryMath.CalculateLaunchAngle(shootingForce, distance, yOffset, -Physics.gravity.y, out angle0, out angle1);
 
+        if (!targetInRange)
+            return -1;
 
-    void ShootBlank() {
-        GameObject ballObj = Instantiate(cannonBallPrefab, cannonBallSpawnPoint.position, cannonBallSpawnPoint.rotation);
-        CannonBall cannonBall = ballObj.GetComponent<CannonBall>();
-        cannonBall.shootingForce = shootingForce;
-
-        ballObj.GetComponent<Collider>().enabled = false;
-        ballObj.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        ballObj.GetComponent<MeshRenderer>().sharedMaterial = blankMat;
+        return TrajectoryMath.TimeOfFlight(shootingForce, angle1, yOffset, -Physics.gravity.y);
     }
 
     void Shoot() {
         // Set reload cooldown
-        shootingTimer = shootingDelay;
+        shootingDelayTimer = shootingDelay;
 
         // Instantiate cannon ball and set its force
         GameObject ballObj = Instantiate(cannonBallPrefab, cannonBallSpawnPoint.position, cannonBallSpawnPoint.rotation);
