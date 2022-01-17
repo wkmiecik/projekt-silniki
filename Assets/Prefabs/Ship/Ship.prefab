@@ -2692,7 +2692,7 @@ GameObject:
   - component: {fileID: 8995850086585055893}
   - component: {fileID: 636058602930626998}
   - component: {fileID: 8864635062173574385}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Equipment UI trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

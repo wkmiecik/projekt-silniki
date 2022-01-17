@@ -8499,9 +8499,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ship
       objectReference: {fileID: 0}
-    - target: {fileID: 3752546763168387755, guid: 33c86e90ba9ad254cb00f263db881702, type: 3}
-      propertyPath: m_Layer
-      value: 15
+    - target: {fileID: 6926850592196180228, guid: 33c86e90ba9ad254cb00f263db881702, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6926850592196180228, guid: 33c86e90ba9ad254cb00f263db881702, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.07
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c86e90ba9ad254cb00f263db881702, type: 3}
@@ -12166,7 +12170,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1613748187}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.63, y: -14.95, z: -0.36}
+  m_LocalPosition: {x: -1.62, y: -14.95, z: -0.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13566,7 +13570,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1779125907}
   m_LocalRotation: {x: 0.46193978, y: -0.33141357, z: 0.19134171, w: 0.8001032}
-  m_LocalPosition: {x: 21.420021, y: 25.46608, z: -17.216742}
+  m_LocalPosition: {x: 15.17002, y: 25.46608, z: -16.91674}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14564,7 +14568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1860472836
 RectTransform:
   m_ObjectHideFlags: 0
