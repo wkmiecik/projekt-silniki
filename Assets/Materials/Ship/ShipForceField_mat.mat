@@ -106,7 +106,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
-    - _Strengh: 3.1
+    - _Strengh: 15.9
     - _Surface: 1
     - _Width: 0.129
     - _WorkflowMode: 1

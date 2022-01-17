@@ -11,8 +11,10 @@ public class CameraController : MonoBehaviour
     // Access to ship
     MainShip ship;
 
-    // Camera
-    CinemachineVirtualCamera cam;
+    // Cameras
+    [SerializeField] CinemachineVirtualCamera mainCam;
+    [SerializeField] CinemachineVirtualCamera shipCam;
+    [SerializeField] CinemachineVirtualCamera shipMenuCam;
     GameObject followPoint;
 
     void Start()
@@ -23,8 +25,7 @@ public class CameraController : MonoBehaviour
         // Access to ship
         ship = ObjectManager.Instance.ship;
 
-        // Camera
-        cam = GetComponent<CinemachineVirtualCamera>();
+        // Camera follow point
         followPoint = new GameObject("Camera follow point");
     }
 
@@ -53,6 +54,25 @@ public class CameraController : MonoBehaviour
                 break;
         }
 
-        cam.Follow = followPoint.transform;
+        mainCam.Follow = followPoint.transform;
+    }
+
+
+    public void SwitchToMainCamera() {
+        shipMenuCam.Priority = 1;
+        shipCam.Priority = 1;
+        mainCam.Priority = 10;
+    }
+
+    public void SwitchToShipCamera() {
+        shipCam.Priority = 10;
+        shipMenuCam.Priority = 1;
+        mainCam.Priority = 1;
+    }
+
+    public void SwitchToShipMenuCamera() {
+        shipMenuCam.Priority = 10;
+        shipCam.Priority = 1;
+        mainCam.Priority = 1;
     }
 }

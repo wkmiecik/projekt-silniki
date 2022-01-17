@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     // Access to ship
     MainShip ship;
 
+    // Access to UI manager
+    UIManager uiManager;
+
     // Movement modes
     public enum MovementMode {
         swimming,
@@ -18,11 +21,11 @@ public class Player : MonoBehaviour
     // Current movement mode
     public MovementMode currentMovementMode = MovementMode.swimming;
 
+
     [Header("Boat movement")]
     // Boat movement variables
-    public float resistanceForce = 0f;
-    public float normalResistanceForce = 20f;
-    public float boostResistanceForce = 7f;
+    public float normalForce = 20f;
+    public float boostForce = 7f;
 
     [Header("Boat boost")]
     public float boostLength = 10f;
@@ -32,6 +35,12 @@ public class Player : MonoBehaviour
     public float rotationLimitFactor = 2000;
 
     [HideInInspector] public GameObject usedCannon;
+
+
+    [Header("Walking movement")]
+    // Walking variables
+    public float walkingForce = 5f;
+
 
     [Header("Objects")]
     // Objects
@@ -51,11 +60,15 @@ public class Player : MonoBehaviour
     float movementChangeDelayTimer = 0f;
     float boostTimer;
     float boostRecoveryDelayTimer;
+    bool boostActive = false;
 
 
     void Start() {
         // Access to ship
         ship = ObjectManager.Instance.ship;
+
+        // Access to UI manager
+        uiManager = ObjectManager.Instance.uiManager;
 
         // Objects
         legsCollider = legs.GetComponent<CapsuleCollider>();
@@ -67,53 +80,53 @@ public class Player : MonoBehaviour
     }
 
     void FixedUpdate() {
-        RaycastHit hit;
-        float mouseDistSqr;
-
-        switch (currentMovementMode) {
-            // If swimming in boat
-            case MovementMode.swimming:
-                // Basic movement forces
-                rb.AddRelativeForce(Vector3.forward * acc * 150000 * Time.fixedDeltaTime);
-                rb.AddRelativeTorque(Vector3.up * rot * 100000 * Time.fixedDeltaTime);
-
-                // Limit speed using resistance force in opposite movement direction
-                rb.AddForce(-rb.velocity * 150 * /*resistanceForce**/ Time.fixedDeltaTime);
-
-                // Limit rotation so the boat doesnt flip
-                // Force should probably depend on rotation!!!!
-                Quaternion rotation = Quaternion.FromToRotation(transform.up, Vector3.up);
-                rb.AddTorque(new Vector3(rotation.x, rotation.y, rotation.z) * rotationLimitFactor);
-                break;
-
-            //  If walking on a ship
-            case MovementMode.walkingOnShip:
-                var mouse = Input.mousePosition;
-                var castPoint = Camera.main.ScreenPointToRay(mouse);
-                if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, LayerMask.GetMask("MouseCollider"))) {
-                    mouseWorldPosition = hit.point;
-                    mouseWorldPosition.y = transform.position.y;
-
-                    mouseDistSqr = (mouseWorldPosition - transform.position).sqrMagnitude;
-
-                    if (mouseDistSqr > 3) {
-                        transform.LookAt(mouseWorldPosition);
+        // If ui is not blocking input, move player using current movement mode
+        if (!uiManager.uiBlockingInput) {
+            switch (currentMovementMode) {
+                case MovementMode.swimming:
+                    if (boostActive) {
+                        rb.AddRelativeForce(Vector3.forward * acc * 300000 * boostForce * Time.fixedDeltaTime);
                     }
-                }
+                    else {
+                        rb.AddRelativeForce(Vector3.forward * acc * 300000 * normalForce * Time.fixedDeltaTime);
+                    }
 
-                rb.AddForce((Vector3.left + Vector3.forward) * acc * 600000 * Time.fixedDeltaTime);
-                rb.AddForce((Vector3.forward + Vector3.right) * rot * 300000 * Time.fixedDeltaTime);
-                break;
+                    rb.AddRelativeTorque(Vector3.up * rot * 200000 * Time.fixedDeltaTime);
 
-            // If shooting cannon
-            case MovementMode.cannonShooting:
-                // Set player position behind cannon;
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-                transform.position = usedCannon.transform.position;
-                transform.rotation = usedCannon.transform.rotation;
-                transform.Translate((Vector3.back * 1.6f) + (Vector3.up * .4f), usedCannon.transform);
-                break;
+                    // Limit rotation so the boat doesnt flip
+                    // Force should probably depend on current rotation!!!!
+                    Quaternion rotation = Quaternion.FromToRotation(transform.up, Vector3.up);
+                    rb.AddTorque(new Vector3(rotation.x, rotation.y, rotation.z) * rotationLimitFactor);
+                    break;
+
+
+
+                case MovementMode.walkingOnShip:
+                    // Look at mouse
+                    float mouseDistSqr = (mouseWorldPosition - transform.position).sqrMagnitude;
+                    if (mouseDistSqr > 1) {
+                        //transform.LookAt(mouseWorldPosition);
+                        Vector3 direction = mouseWorldPosition - transform.position;
+                        direction = Math3d.ProjectVectorOnPlane(Vector3.up, direction);
+                        transform.localRotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 0, 0);
+                    }
+
+                    rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                    rb.velocity += (Vector3.left + Vector3.forward) * acc * walkingForce;
+                    rb.velocity += (Vector3.forward + Vector3.right) * rot * walkingForce;
+                    break;
+
+
+
+                case MovementMode.cannonShooting:
+                    // Set player position behind cannon;
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    transform.position = usedCannon.transform.position;
+                    transform.rotation = usedCannon.transform.rotation;
+                    transform.Translate((Vector3.back * 1.2f) + (Vector3.up * .1f), usedCannon.transform);
+                    break;
+            }
         }
     }
 
@@ -132,7 +145,7 @@ public class Player : MonoBehaviour
 
         // Apply boost to boat
         if (Input.GetKey(KeyCode.LeftShift) && boostTimer > 0) {
-            resistanceForce = boostResistanceForce;
+            boostActive = true;
             boostTimer -= Time.deltaTime;
             boostRecoveryDelayTimer = boostRecoveryDelay;
         } else {
@@ -141,7 +154,7 @@ public class Player : MonoBehaviour
             } else {
                 if (boostTimer < boostLength) boostTimer += Time.deltaTime;
             }
-            resistanceForce = normalResistanceForce;
+            boostActive = false;
         }
 
         // Delay between changing movement style
@@ -196,29 +209,41 @@ public class Player : MonoBehaviour
             case MovementMode.swimming:
                 currentMovementMode = MovementMode.swimming;
                 rb.velocity = Vector3.zero;
+                rb.mass = 200;
+                rb.freezeRotation = false;
                 if (updatePosition) {
                     gameObject.transform.position = ship.boatSpawnPoint.transform.position;
                     gameObject.transform.rotation = ship.boatSpawnPoint.transform.rotation;
                 }
                 legs.SetActive(false);
                 boat.SetActive(true);
+
+                ObjectManager.Instance.cameraController.SwitchToMainCamera();
+                ship.SetSailsVisible();
                 break;
 
 
             case MovementMode.walkingOnShip:
                 currentMovementMode = MovementMode.walkingOnShip;
                 rb.velocity = Vector3.zero;
+                rb.mass = 50;
+                rb.freezeRotation = true;
                 if (updatePosition) {
                     gameObject.transform.position = ship.playerSpawnPoint.transform.position;
                     gameObject.transform.rotation = ship.playerSpawnPoint.transform.rotation;
                 }
                 boat.SetActive(false);
                 legs.SetActive(true);
+
+                ObjectManager.Instance.cameraController.SwitchToShipCamera();
+                ship.SetSailsTransparent();
                 break;
 
 
             case MovementMode.cannonShooting:
                 currentMovementMode = MovementMode.cannonShooting;
+                ObjectManager.Instance.cameraController.SwitchToMainCamera();
+                ship.SetSailsTransparent();
                 break;
         }
     }

@@ -8,8 +8,10 @@ public class BuoyantObj : MonoBehaviour {
     // Access to ocean manager
     OceanManager oceanManager;
 
+    [Header("Floaters")]
     public Transform[] floaters;
 
+    [Header("Buoyancy settings")]
     public float underWaterDrag = 3f;
 
     public float underWaterAngularDrag = 1f;
@@ -20,28 +22,41 @@ public class BuoyantObj : MonoBehaviour {
 
     public float floatingPower = 15f;
 
-    Rigidbody m_Rigidbody;
-
     int floatersUnderwater;
 
     bool underwater;
 
+    Rigidbody rb;
 
-    // Start is called before the first frame update
+    // Optimization
+    [Header("Optimizations")]
+    [SerializeField] bool buoyancyOffWhenFarFromPlayer = false;
+    [SerializeField] float buoyancyOffDistanceSqr = 1000;
+    // Access to player
+    Player player;
+
+
     void Start() {
         // Access to ocean manager
         oceanManager = ObjectManager.Instance.oceanManager;
 
-        m_Rigidbody = GetComponent<Rigidbody>();
+        // Access to player
+        player = ObjectManager.Instance.player;
+
+        rb = GetComponent<Rigidbody>();
     }
 
 
     //DEBUGGING
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
-        foreach (var floater in floaters) {
-            Gizmos.DrawSphere(floater.position, .1f);
+
+        if (floaters.Length > 0) {
+            foreach (var floater in floaters) {
+                Gizmos.DrawSphere(floater.position, .1f);
+            }
         }
+
 
         if (Application.IsPlaying(this)) {
             Gizmos.color = Color.red;
@@ -55,35 +70,44 @@ public class BuoyantObj : MonoBehaviour {
     void FixedUpdate() {
         floatersUnderwater = 0;
 
-        for (int i = 0; i < floaters.Length; i++) {
-            float difference = floaters[i].position.y - oceanManager.GetHeightAtPosition(floaters[i].position);
+        Vector2 this2dPos = new Vector2(transform.position.x, transform.position.z);
+        Vector2 player2dPos = new Vector2(player.transform.position.x, player.transform.position.z);
 
-            if (difference < 0) {
-                m_Rigidbody.AddForceAtPosition(Vector3.up * floatingPower * Mathf.Abs(difference), floaters[i].position + (Vector3.up*2), ForceMode.Acceleration);
-                floatersUnderwater += 1;
+        if (!buoyancyOffWhenFarFromPlayer || (this2dPos - player2dPos).sqrMagnitude < buoyancyOffDistanceSqr) {
+            rb.isKinematic = false;
 
-                if (!underwater) {
-                    underwater = true;
-                    SwitchState(true);
+            for (int i = 0; i < floaters.Length; i++) {
+                float difference = floaters[i].position.y - oceanManager.GetHeightAtPosition(floaters[i].position);
+
+                if (difference < 0) {
+                    rb.AddForceAtPosition(Vector3.up * floatingPower * Mathf.Abs(difference), floaters[i].position + (Vector3.up * 2), ForceMode.Acceleration);
+                    floatersUnderwater += 1;
+
+                    if (!underwater) {
+                        underwater = true;
+                        SwitchState(true);
+                    }
+                }
+
+                if (underwater && floatersUnderwater == 0) {
+                    underwater = false;
+                    SwitchState(false);
                 }
             }
-
-            if (underwater && floatersUnderwater == 0) {
-                underwater = false;
-                SwitchState(false);
-            }
+        } else {
+            rb.isKinematic = true;
         }
 
 
         void SwitchState(bool isUnderwater) {
             if (isUnderwater) {
-                m_Rigidbody.drag = underWaterDrag;
-                m_Rigidbody.angularDrag = underWaterAngularDrag;
+                rb.drag = underWaterDrag;
+                rb.angularDrag = underWaterAngularDrag;
 
             }
             else {
-                m_Rigidbody.drag = airDrag;
-                m_Rigidbody.angularDrag = airAngularDrag;
+                rb.drag = airDrag;
+                rb.angularDrag = airAngularDrag;
             }
         }
     }

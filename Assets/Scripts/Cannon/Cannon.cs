@@ -92,13 +92,13 @@ public class Cannon : MonoBehaviour
 
             if (inRange) {
                 // Show aim marker and set its position to mouse
-                aimMarkerObject.transform.position = mousePos;
+                aimMarkerObject.transform.position = target;
                 aimMarkerRenderer.sharedMaterial.color = aimMarkerInRangeColor;
                 aimMarkerObject.SetActive(true);
             }
             else {
                 // Set marker to diffrent color if out of range
-                aimMarkerObject.transform.position = mousePos;
+                aimMarkerObject.transform.position = target;
                 aimMarkerRenderer.sharedMaterial.color = aimMarkerOutOfRangeColor;
             }
         } else {

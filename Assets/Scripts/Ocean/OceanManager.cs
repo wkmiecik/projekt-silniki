@@ -36,7 +36,7 @@ public class OceanManager : MonoBehaviour
         Vector3 truePoint;
         truePoint = position;
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             if (Physics.Raycast(new Vector3(truePoint.x, 100, truePoint.z), -Vector3.up, out hit, 200f, LayerMask.GetMask("OceanFloor"))) {
                 startHeight = 100 - hit.distance;
             }

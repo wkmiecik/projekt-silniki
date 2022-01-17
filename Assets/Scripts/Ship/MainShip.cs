@@ -16,6 +16,11 @@ public class MainShip : MonoBehaviour
     public GameObject sails;
     public GameObject[] sailsUp;
     public GameObject[] sailsDown;
+    //public Color visibleColor;
+    //public Color transparentColor;
+    public Material visibleMaterial;
+    public Material transparentMaterial;
+    Material sailsMaterial;
 
     // Spawn points
     public GameObject playerSpawnPoint;
@@ -33,17 +38,18 @@ public class MainShip : MonoBehaviour
 
         // Set starting hp
         ui.SetShipHPtext(HP);
-    }
 
-    void Update()
-    {
-        // Hide sails if player onboard
-        if (player.currentMovementMode == Player.MovementMode.walkingOnShip || player.currentMovementMode == Player.MovementMode.cannonShooting) {
-            sails.SetActive(false);
+        // Sails material
+        sailsMaterial = sails.GetComponentInChildren<MeshRenderer>().sharedMaterial;
+
+
+        if (player.currentMovementMode == Player.MovementMode.walkingOnShip) {
+            SetSailsTransparent();
         } else {
-            sails.SetActive(true);
+            SetSailsVisible();
         }
     }
+
 
 
     public void getHit(int dmg) {
@@ -60,4 +66,19 @@ public class MainShip : MonoBehaviour
             ui.SetShipHPtext(HP);
         }
     }
+
+
+
+    public void SetSailsTransparent() {
+        foreach (var sail in sailsUp) {
+            sail.GetComponentInChildren<MeshRenderer>().sharedMaterial = transparentMaterial;
+        }
+    }
+
+    public void SetSailsVisible() {
+        foreach (var sail in sailsUp) {
+            sail.GetComponentInChildren<MeshRenderer>().sharedMaterial = visibleMaterial;
+        }
+    }
 }
+

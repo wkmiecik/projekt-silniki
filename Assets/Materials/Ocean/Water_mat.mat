@@ -26,7 +26,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3020
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -126,7 +126,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: 20
     - _ReceiveShadows: 1
     - _Smoothness: 0.55
     - _SmoothnessTextureChannel: 0
@@ -151,14 +151,14 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.24390331, g: 0.518373, b: 0.8207547, a: 0.8509804}
+    - _Color: {r: 0.26873425, g: 0.58550966, b: 0.9339623, a: 0.7647059}
     - _Direction: {r: 1, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WaveA: {r: -1.43, g: 1.44, b: 0.1, a: 300}
-    - _WaveB: {r: 0.01, g: 0.6, b: 0.07, a: 100}
-    - _WaveC: {r: 1, g: 2.07, b: 0.05, a: 50}
-    - _WaveD: {r: -1.65, g: -3.87, b: 0.25, a: 1}
+    - _WaveA: {r: 0, g: 1, b: 0.03, a: 900}
+    - _WaveB: {r: 0, g: 1, b: 0.02, a: 100}
+    - _WaveC: {r: 0, g: 1, b: 0.03, a: 50}
+    - _WaveD: {r: 0, g: 1, b: 0.1, a: 2}
     - _WaveFrequency: {r: 0.00020000001, g: 0.00020000001, b: 0.00020000001, a: 0.00020000001}
     - _Wave_Frequency: {r: 0.004, g: 0.004, b: 0, a: 0}
     - _WavesEnabled: {r: 1, g: 1, b: 1, a: 1}

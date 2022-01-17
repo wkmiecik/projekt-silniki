@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class ObjectManager : Singleton<ObjectManager>
 {
+    // Camera controller
+    public CameraController cameraController;
+
     // Player objects
     public Player player;
 
@@ -10,6 +13,9 @@ public class ObjectManager : Singleton<ObjectManager>
 
     // Ocean manager
     public OceanManager oceanManager;
+
+    // Resources manager
+    public ResourcesManager resourcesManager;
 
     // Sun
     public GameObject sun;
@@ -22,4 +28,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     // UI manager
     public UIManager uiManager;
+
+    // Equipment levels
+    public EquipmentLevels equipmentLevels;
 }

@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82392f8c6e3f74428985fd8a67550af, type: 3}
+  m_Name: Equipment levels strings
+  m_EditorClassIdentifier: 
+  cannonUpgrades:
+  - cost_1_resource: 0
+    cost_1_icon: {fileID: 21300000, guid: 7c08f284c320a8847b72e0309de401da, type: 3}
+    cost_1_amount: 6
+    cost_2_resource: 1
+    cost_2_icon: {fileID: 21300000, guid: a85bf291ff214004394041b3e9e1ca15, type: 3}
+    cost_2_amount: 10
+    bonus_1: Damage +2
+    bonus_2: Reload -0.3s
+  - cost_1_resource: 0
+    cost_1_icon: {fileID: 21300000, guid: 7c08f284c320a8847b72e0309de401da, type: 3}
+    cost_1_amount: 12
+    cost_2_resource: 1
+    cost_2_icon: {fileID: 21300000, guid: a85bf291ff214004394041b3e9e1ca15, type: 3}
+    cost_2_amount: 17
+    bonus_1: Damage +3
+    bonus_2: Reload -0.3s
+  cannonBallsUpgrades:
+  - cost_1_resource: 0
+    cost_1_icon: {fileID: 21300000, guid: ff36f9d0368274a48a40d40d025a3abf, type: 3}
+    cost_1_amount: 30
+    cost_2_resource: 2
+    cost_2_icon: {fileID: 21300000, guid: 7c08f284c320a8847b72e0309de401da, type: 3}
+    cost_2_amount: 10
+    bonus_1: Damage +3
+    bonus_2: Speed +1
+  shipUpgrades:
+  - cost_1_resource: 0
+    cost_1_icon: {fileID: 21300000, guid: ff36f9d0368274a48a40d40d025a3abf, type: 3}
+    cost_1_amount: 75
+    cost_2_resource: 1
+    cost_2_icon: {fileID: 21300000, guid: a85bf291ff214004394041b3e9e1ca15, type: 3}
+    cost_2_amount: 50
+    bonus_1: Cannon slots +2
+    bonus_2: Crew slots +2
+  - cost_1_resource: 0
+    cost_1_icon: {fileID: 21300000, guid: ff36f9d0368274a48a40d40d025a3abf, type: 3}
+    cost_1_amount: 90
+    cost_2_resource: 1
+    cost_2_icon: {fileID: 21300000, guid: a85bf291ff214004394041b3e9e1ca15, type: 3}
+    cost_2_amount: 75
+    bonus_1: Cannon slots +2
+    bonus_2: Crew slots +2
