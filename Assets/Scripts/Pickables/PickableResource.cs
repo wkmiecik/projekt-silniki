@@ -29,6 +29,10 @@ public class PickableResource : MonoBehaviour
     public int minimumIronAmount = 1;
     public int maximumIronAmount = 10;
 
+    [Header("Destroy Options")]
+    public bool destroyOnCollision = true;
+    public float destroyDelay = .3f;
+
 
     // Was it already picked
     bool alreadyPicked = false;
@@ -49,7 +53,9 @@ public class PickableResource : MonoBehaviour
                 resourcesManager.iron += Random.Range(minimumIronAmount, maximumIronAmount + 1);
             }
 
-            Destroy(gameObject, .3f);
+            if (destroyOnCollision) {
+                Destroy(gameObject, destroyDelay);
+            }
         }
     }
 }

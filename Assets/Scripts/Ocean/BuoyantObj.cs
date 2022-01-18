@@ -8,7 +8,6 @@ public class BuoyantObj : MonoBehaviour {
     // Access to ocean manager
     OceanManager oceanManager;
 
-    [Header("Floaters")]
     public Transform[] floaters;
 
     [Header("Buoyancy settings")]
@@ -44,6 +43,13 @@ public class BuoyantObj : MonoBehaviour {
         player = ObjectManager.Instance.player;
 
         rb = GetComponent<Rigidbody>();
+
+        if (floaters.Length == 0) {
+            floaters = new Transform[1];
+            floaters[0] = new GameObject("floater").transform;
+            floaters[0].SetParent(transform, false);
+            floaters[0].position = rb.worldCenterOfMass;
+        }
     }
 
 
