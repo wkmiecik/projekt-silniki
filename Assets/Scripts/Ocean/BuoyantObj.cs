@@ -81,6 +81,7 @@ public class BuoyantObj : MonoBehaviour {
 
         if (!buoyancyOffWhenFarFromPlayer || (this2dPos - player2dPos).sqrMagnitude < buoyancyOffDistanceSqr) {
             rb.isKinematic = false;
+            rb.detectCollisions = true;
 
             for (int i = 0; i < floaters.Length; i++) {
                 float difference = floaters[i].position.y - oceanManager.GetHeightAtPosition(floaters[i].position);
@@ -102,6 +103,7 @@ public class BuoyantObj : MonoBehaviour {
             }
         } else {
             rb.isKinematic = true;
+            rb.detectCollisions = false;
         }
 
 

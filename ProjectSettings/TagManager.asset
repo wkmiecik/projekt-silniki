@@ -27,7 +27,7 @@ TagManager:
   - MouseCollider
   - OceanFloor
   - CannonBall
-  - 
+  - ExplodedChunks
   - 
   - EquipmentMenuTrigger
   - 

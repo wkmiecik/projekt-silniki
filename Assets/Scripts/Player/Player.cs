@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     public enum MovementMode {
         swimming,
         walkingOnShip,
-        cannonShooting
+        cannonShooting,
+        shipMenuOpened
     }
 
     [Header("Movement modes")]
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
 
     // Input
-    float rot, acc;
+    [HideInInspector] public float rot, acc;
     [HideInInspector] public Vector3 mouseWorldPosition;
 
     // Movement modes changing
@@ -124,7 +125,7 @@ public class Player : MonoBehaviour
                     rb.angularVelocity = Vector3.zero;
                     transform.position = usedCannon.transform.position;
                     transform.rotation = usedCannon.transform.rotation;
-                    transform.Translate((Vector3.back * 1.2f) + (Vector3.up * .1f), usedCannon.transform);
+                    transform.Translate((Vector3.back * 1f) + (Vector3.up * .1f), usedCannon.transform);
                     break;
             }
         }
@@ -218,7 +219,7 @@ public class Player : MonoBehaviour
                 legs.SetActive(false);
                 boat.SetActive(true);
 
-                ObjectManager.Instance.cameraController.SwitchToMainCamera();
+                //ObjectManager.Instance.cameraController.SwitchToMainCamera();
                 ship.SetSailsVisible();
                 break;
 
@@ -235,14 +236,14 @@ public class Player : MonoBehaviour
                 boat.SetActive(false);
                 legs.SetActive(true);
 
-                ObjectManager.Instance.cameraController.SwitchToShipCamera();
+                //ObjectManager.Instance.cameraController.SwitchToShipCamera();
                 ship.SetSailsTransparent();
                 break;
 
 
             case MovementMode.cannonShooting:
                 currentMovementMode = MovementMode.cannonShooting;
-                ObjectManager.Instance.cameraController.SwitchToMainCamera();
+                //ObjectManager.Instance.cameraController.SwitchToMainCamera();
                 ship.SetSailsTransparent();
                 break;
         }

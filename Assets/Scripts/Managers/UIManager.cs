@@ -152,6 +152,10 @@ public class UIManager : MonoBehaviour
         ObjectManager.Instance.resourcesManager.AddResource(resourceType, int.Parse(text.text));
     }
 
+    public void GetResourceAniamted() {
+
+    }
+
 
 
     public void UpgradeIconClicked(int equipmentType) {
@@ -197,7 +201,7 @@ public class UIManager : MonoBehaviour
             StartCoroutine(SetScrollOpenedAfterDelay(scrollAnimationDuration));
 
             DisablePlayerTipText();
-            ObjectManager.Instance.cameraController.SwitchToShipMenuCamera();
+            ObjectManager.Instance.player.currentMovementMode = Player.MovementMode.shipMenuOpened;
             ObjectManager.Instance.ship.SetSailsVisible();
         }
     }
@@ -212,7 +216,8 @@ public class UIManager : MonoBehaviour
             StartCoroutine(SetScrollClosedAfterDelay(scrollAnimationDuration));
 
             EnablePlayerTipText();
-            ObjectManager.Instance.cameraController.SwitchToShipCamera();
+            //ObjectManager.Instance.cameraController.SwitchToShipCamera();
+            ObjectManager.Instance.player.currentMovementMode = Player.MovementMode.walkingOnShip;
             ObjectManager.Instance.ship.SetSailsTransparent();
         }
     }

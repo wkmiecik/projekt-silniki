@@ -15,24 +15,24 @@ MonoBehaviour:
   cannonUpgrades:
   - cost_1_resource: 0
     cost_1_icon: {fileID: 21300000, guid: 7c08f284c320a8847b72e0309de401da, type: 3}
-    cost_1_amount: 6
+    cost_1_amount: 3
     cost_2_resource: 1
     cost_2_icon: {fileID: 21300000, guid: a85bf291ff214004394041b3e9e1ca15, type: 3}
-    cost_2_amount: 10
+    cost_2_amount: 5
     bonus_1: Damage +2
     bonus_2: Reload -0.3s
   - cost_1_resource: 0
     cost_1_icon: {fileID: 21300000, guid: 7c08f284c320a8847b72e0309de401da, type: 3}
-    cost_1_amount: 12
+    cost_1_amount: 6
     cost_2_resource: 1
     cost_2_icon: {fileID: 21300000, guid: a85bf291ff214004394041b3e9e1ca15, type: 3}
-    cost_2_amount: 17
+    cost_2_amount: 10
     bonus_1: Damage +3
     bonus_2: Reload -0.3s
   cannonBallsUpgrades:
   - cost_1_resource: 0
     cost_1_icon: {fileID: 21300000, guid: ff36f9d0368274a48a40d40d025a3abf, type: 3}
-    cost_1_amount: 30
+    cost_1_amount: 10
     cost_2_resource: 2
     cost_2_icon: {fileID: 21300000, guid: 7c08f284c320a8847b72e0309de401da, type: 3}
     cost_2_amount: 10

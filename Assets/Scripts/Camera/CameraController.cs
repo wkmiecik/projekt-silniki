@@ -27,6 +27,8 @@ public class CameraController : MonoBehaviour
 
         // Camera follow point
         followPoint = new GameObject("Camera follow point");
+
+        mainCam.Follow = followPoint.transform;
     }
 
     void Update()
@@ -36,11 +38,13 @@ public class CameraController : MonoBehaviour
             // If swimming, just follow
             case Player.MovementMode.swimming:
                 followPoint.transform.position = player.transform.position;
+                SwitchToMainCamera();
                 break;
 
             // If walking on ship, just follow
             case Player.MovementMode.walkingOnShip:
                 followPoint.transform.position = ship.transform.position;
+                SwitchToShipCamera();
                 break;
 
             // If using cannon, move camera slightly towards mouse position
@@ -51,10 +55,14 @@ public class CameraController : MonoBehaviour
                 float mouseY = Mathf.Clamp(Camera.main.ScreenToViewportPoint(Input.mousePosition).y, 0, 1);
                 float dist = Vector2.Distance(new Vector2(.5f, .5f), new Vector2(mouseX, mouseY));
                 followPoint.transform.Translate((player.mouseWorldPosition - player.usedCannon.transform.position).normalized * dist * 25);
+                SwitchToMainCamera();
+                break;
+
+            // If ship menu is opened
+            case Player.MovementMode.shipMenuOpened:
+                SwitchToShipMenuCamera();
                 break;
         }
-
-        mainCam.Follow = followPoint.transform;
     }
 
 
