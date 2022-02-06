@@ -168,6 +168,8 @@ public class Player : MonoBehaviour
 
 
     private void OnTriggerStay(Collider other) {
+        if (uiManager.uiBlockingInput) return;
+
         if (Input.GetKey(KeyCode.Q) && other.tag == "MainShip" && currentMovementMode != MovementMode.cannonShooting && !movementChangeLocked) {
             movementChangeLocked = true;
             movementChangeDelayTimer = 1f;
@@ -176,6 +178,8 @@ public class Player : MonoBehaviour
             } else {
                 SwitchMovementMode(MovementMode.swimming, true);
             }
+
+            uiManager.DisablePlayerTipText();
         }
 
         if (Input.GetKey(KeyCode.E) && other.tag == "Cannon" && currentMovementMode == MovementMode.walkingOnShip && !movementChangeLocked) {

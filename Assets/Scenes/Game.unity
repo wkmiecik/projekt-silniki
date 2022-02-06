@@ -3446,7 +3446,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'ammo 20/30
+  m_text: 'ammo 30/50
 
 '
   m_isRightToLeft: 0
@@ -4824,7 +4824,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: crew 3/5
+  m_text: crew 0/2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2627cc061a6c4445b18e1555f88ec74, type: 2}
   m_sharedMaterial: {fileID: 3035335505929871916, guid: a2627cc061a6c4445b18e1555f88ec74, type: 2}
@@ -18032,7 +18032,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: cannons 2/4
+  m_text: cannons 6/6
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2627cc061a6c4445b18e1555f88ec74, type: 2}
   m_sharedMaterial: {fileID: 3035335505929871916, guid: a2627cc061a6c4445b18e1555f88ec74, type: 2}
