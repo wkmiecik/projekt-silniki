@@ -10,6 +10,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     // Ship objects
     public MainShip ship;
+    public ShipEquipment shipEquipment;
 
     // Ocean manager
     public OceanManager oceanManager;

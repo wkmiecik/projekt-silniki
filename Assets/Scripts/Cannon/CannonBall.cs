@@ -8,12 +8,15 @@ public class CannonBall : MonoBehaviour
 
     [HideInInspector] public float shootingForce;
 
-    [SerializeField] int damage = 10;
+    [HideInInspector] public int damage = 1;
+
+    [HideInInspector] public float konckback = 1;
 
     float destroyTimer = 10f;
 
     void Start() {
         rb = gameObject.GetComponent<Rigidbody>();
+        rb.mass = konckback;
         rb.AddRelativeForce(Vector3.forward * shootingForce, ForceMode.VelocityChange);
     }
 

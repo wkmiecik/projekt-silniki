@@ -15,6 +15,9 @@ public class Cannon : MonoBehaviour
     // Access to ocean manager
     OceanManager oceanManager;
 
+    // Access to ship equipment
+    ShipEquipment shipEquipment;
+
     public bool playerSteering = false;
     public bool aiSteering = false;
 
@@ -26,7 +29,6 @@ public class Cannon : MonoBehaviour
     [SerializeField] float shootingForce = 30f;
     [SerializeField] float predictionFactor = 30f;
 
-    [SerializeField] float shootingDelay = .1f;
     float shootingDelayTimer = 0;
 
     VisualEffect cannonVFX;
@@ -56,6 +58,10 @@ public class Cannon : MonoBehaviour
         // Access to ocean manager
         oceanManager = ObjectManager.Instance.oceanManager;
 
+        // Access to ship equipment
+        shipEquipment = ObjectManager.Instance.shipEquipment;
+
+
         // Get vfx components
         cannonVFX = GetComponentInChildren<VisualEffect>();
         cannonLight = GetComponentInChildren<Light>();
@@ -65,7 +71,7 @@ public class Cannon : MonoBehaviour
         cannonBallSpawnPoint = barrel.Find("Cannonball Spawn Point");
 
         // Set reload timer
-        shootingDelayTimer = shootingDelay * .5f;
+        shootingDelayTimer = shipEquipment.cannonReload;
 
         // Get starting horizontal rotation
         startingRotation = transform.rotation;
@@ -218,12 +224,14 @@ public class Cannon : MonoBehaviour
 
     void Shoot() {
         // Set reload cooldown
-        shootingDelayTimer = shootingDelay;
+        shootingDelayTimer = shipEquipment.cannonReload;
 
-        // Instantiate cannon ball and set its force
+        // Instantiate cannon ball, set its force and statistics
         GameObject ballObj = Instantiate(cannonBallPrefab, cannonBallSpawnPoint.position, cannonBallSpawnPoint.rotation);
         CannonBall cannonBall = ballObj.GetComponent<CannonBall>();
         cannonBall.shootingForce = shootingForce;
+        cannonBall.damage = shipEquipment.cannonDamage;
+        cannonBall.konckback = shipEquipment.cannonKnockback;
 
         // Play vfx
         cannonVFX.Play();

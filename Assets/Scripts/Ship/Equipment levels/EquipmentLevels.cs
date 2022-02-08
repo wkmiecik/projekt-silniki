@@ -7,13 +7,13 @@ public class EquipmentLevels : ScriptableObject {
     public EquipmentUpgrade[] cannonBallsUpgrades;
     public EquipmentUpgrade[] shipUpgrades;
 
-    public EquipmentUpgrade[] GetUpgrades(ShipEquipment.EquipmentType equipmentType) {
+    public EquipmentUpgrade[] GetUpgrades(EquipmentType equipmentType) {
         switch (equipmentType) {
-            case (ShipEquipment.EquipmentType.cannon):
+            case (EquipmentType.cannon):
                 return cannonUpgrades;
-            case (ShipEquipment.EquipmentType.cannonBalls):
+            case (EquipmentType.cannonBalls):
                 return cannonBallsUpgrades;
-            case (ShipEquipment.EquipmentType.ship):
+            case (EquipmentType.ship):
                 return shipUpgrades;
         }
 

@@ -159,13 +159,13 @@ public class UIManager : MonoBehaviour
 
 
     public void UpgradeIconClicked(int equipmentType) {
-        shipEquipment.UpgradeEquipment((ShipEquipment.EquipmentType)equipmentType);
+        shipEquipment.UpgradeEquipment((EquipmentType)equipmentType);
     }
 
 
     // Hovering over upgrade icon
     public void ShowHoverInfoPanel(int equipmentType) {
-        ShipEquipment.EquipmentType type = (ShipEquipment.EquipmentType)equipmentType;
+        EquipmentType type = (EquipmentType)equipmentType;
         int levelIndex = shipEquipment.GetEquipmentLevel(type) - 1;
         if (levelIndex >= equipmentLevels.GetUpgrades(type).Length) {
             infoPanelMaxLevel.SetActive(true);
@@ -173,14 +173,30 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        cost1_icon.sprite = equipmentLevels.GetUpgrades(type)[levelIndex].cost_1_icon;
-        cost1_text.text = equipmentLevels.GetUpgrades(type)[levelIndex].cost_1_amount.ToString();
-        cost2_icon.sprite = equipmentLevels.GetUpgrades(type)[levelIndex].cost_2_icon;
-        cost2_text.text = equipmentLevels.GetUpgrades(type)[levelIndex].cost_2_amount.ToString();
-        bonus1_text.text = equipmentLevels.GetUpgrades(type)[levelIndex].bonus_1;
-        bonus2_text.text = equipmentLevels.GetUpgrades(type)[levelIndex].bonus_2;
+        EquipmentUpgrade upgrade = equipmentLevels.GetUpgrades(type)[levelIndex];
+        cost1_icon.sprite = upgrade.cost_1_icon;
+        cost1_text.text = upgrade.cost_1_amount.ToString();
+        cost2_icon.sprite = upgrade.cost_2_icon;
+        cost2_text.text = upgrade.cost_2_amount.ToString();
+        bonus1_text.text = GetBonusText(upgrade.bonus_1, upgrade.bonus_1_amount);
+        bonus2_text.text = GetBonusText(upgrade.bonus_2, upgrade.bonus_2_amount);
         infoPanel.SetActive(true);
         infoPanelMaxLevel.SetActive(false);
+    }
+    private string GetBonusText(UpgradeBonusType upgradeBonusType, float amount) {
+        switch (upgradeBonusType) {
+            case (UpgradeBonusType.cannonDamage):
+                return $"Damage +{(int)amount}";
+            case (UpgradeBonusType.cannonKnockback):
+                return $"Knockback +{amount}";
+            case (UpgradeBonusType.cannonReload):
+                return $"Reload -{amount}s";
+            case (UpgradeBonusType.shipCannonSlots):
+                return $"Cannon slots +{(int)amount}";
+            case (UpgradeBonusType.shipCrewSlots):
+                return $"Crew slots +{(int)amount}";
+        }
+        throw new UnityException("Wrong bonus type");
     }
 
     public void HideHoverInfoPanel() {
@@ -238,15 +254,15 @@ public class UIManager : MonoBehaviour
 
 
     // Equipment levels
-    public void SetEquipmentLevelText(ShipEquipment.EquipmentType equipmentType, int level) {
+    public void SetEquipmentLevelText(EquipmentType equipmentType, int level) {
         switch (equipmentType) {
-            case (ShipEquipment.EquipmentType.cannon):
+            case (EquipmentType.cannon):
                 cannonLevelText.text = $"{level} lvl";
                 return;
-            case (ShipEquipment.EquipmentType.cannonBalls):
+            case (EquipmentType.cannonBalls):
                 cannonballsLevelText.text = $"{level} lvl";
                 return;
-            case (ShipEquipment.EquipmentType.ship):
+            case (EquipmentType.ship):
                 shipLevelText.text = $"{level} lvl";
                 return;
         }
