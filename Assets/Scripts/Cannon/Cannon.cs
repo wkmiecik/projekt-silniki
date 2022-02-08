@@ -34,9 +34,11 @@ public class Cannon : MonoBehaviour
     VisualEffect cannonVFX;
     Light cannonLight;
 
-    //[SerializeField] CannonballArc trajectory;
 
     [Header("Aim marker")]
+    [SerializeField] bool trajectoryEnabled;
+    [SerializeField] CannonballArc trajectory;
+    [SerializeField] bool aimMarkerEnabled;
     [SerializeField] GameObject aimMarkerObject;
     [SerializeField] MeshRenderer aimMarkerRenderer;
     [SerializeField] Color aimMarkerInRangeColor;
@@ -97,19 +99,31 @@ public class Cannon : MonoBehaviour
             }
 
             if (inRange) {
-                // Show aim marker and set its position to mouse
-                aimMarkerObject.transform.position = target;
-                aimMarkerRenderer.sharedMaterial.color = aimMarkerInRangeColor;
-                aimMarkerObject.SetActive(true);
+                // Show marker and set its position to mouse
+                if (aimMarkerEnabled) {
+                    aimMarkerObject.transform.position = target;
+                    aimMarkerRenderer.sharedMaterial.color = aimMarkerInRangeColor;
+                    aimMarkerObject.SetActive(true);
+                }
+                if (trajectoryEnabled) {
+                    trajectory.SetColor(aimMarkerInRangeColor);
+                    trajectory.lineRenderer.enabled = true;
+                }
             }
             else {
                 // Set marker to diffrent color if out of range
-                aimMarkerObject.transform.position = target;
-                aimMarkerRenderer.sharedMaterial.color = aimMarkerOutOfRangeColor;
+                if (aimMarkerEnabled) {
+                    aimMarkerObject.transform.position = target;
+                    aimMarkerRenderer.sharedMaterial.color = aimMarkerOutOfRangeColor;
+                }
+                if (trajectoryEnabled) {
+                    trajectory.SetColor(aimMarkerOutOfRangeColor);
+                }
             }
         } else {
             // Hide aim marker if not using cannon
             aimMarkerObject.SetActive(false);
+            trajectory.lineRenderer.enabled = false;
         }
 
 
@@ -141,15 +155,6 @@ public class Cannon : MonoBehaviour
                 }
             }
         }
-
-
-        // Show/hide trajectory
-        //if (aiSteering || playerSteering) {
-        //    trajectory.lineRenderer.enabled = true;
-        //}
-        //else {
-        //    trajectory.lineRenderer.enabled = false;
-        //}
     }
 
 
@@ -178,7 +183,6 @@ public class Cannon : MonoBehaviour
 
         float angle0, angle1;
         bool targetInRange = TrajectoryMath.CalculateLaunchAngle(shootingForce, distance, yOffset, -Physics.gravity.y, out angle0, out angle1);
-        //trajectory.UpdateArc(shootingForce, distance, -Physics.gravity.y, angle1, direction, targetInRange);
 
         var barrelAngle = angle1 * Mathf.Rad2Deg;
         var baseAngle = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 0, 0);
@@ -203,7 +207,7 @@ public class Cannon : MonoBehaviour
         }
         barrel.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y - 90, 0) * Quaternion.AngleAxis(barrelAngle, Vector3.left);
 
-
+        trajectory.UpdateArc(shootingForce, distance, -Physics.gravity.y, angle1, direction, targetInRange);
         return true;
     }
 

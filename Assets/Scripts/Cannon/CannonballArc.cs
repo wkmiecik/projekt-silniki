@@ -1,18 +1,12 @@
 using UnityEngine;
 
 public class CannonballArc : MonoBehaviour {
-    [SerializeField]
-    int iterations = 20;
+    [SerializeField] int iterations = 20;
 
-    [SerializeField]
-    Color errorColor;
-
-    private Color initialColor;
     public LineRenderer lineRenderer;
 
     void Awake() {
         lineRenderer = GetComponent<LineRenderer>();
-        initialColor = lineRenderer.material.color;
     }
 
     public void UpdateArc(float speed, float distance, float gravity, float angle, Vector3 direction, bool valid) {
@@ -27,7 +21,9 @@ public class CannonballArc : MonoBehaviour {
         lineRenderer.SetPositions(points3d);
 
         transform.rotation = Quaternion.LookRotation(direction);
+    }
 
-        lineRenderer.material.color = valid ? initialColor : errorColor;
+    public void SetColor(Color color) {
+        lineRenderer.sharedMaterial.color = color;
     }
 }

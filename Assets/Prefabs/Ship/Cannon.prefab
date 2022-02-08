@@ -217,7 +217,9 @@ MonoBehaviour:
   cannonBallPrefab: {fileID: 3129382161711431687, guid: 053afa60139fc434d8f1a2f1d9d9b845, type: 3}
   shootingForce: 25
   predictionFactor: 0.18
-  shootingDelay: 3
+  trajectoryEnabled: 1
+  trajectory: {fileID: 298130629792827751}
+  aimMarkerEnabled: 0
   aimMarkerObject: {fileID: 7339191457660428431}
   aimMarkerRenderer: {fileID: 4519837799635121308}
   aimMarkerInRangeColor: {r: 0.7647059, g: 1, b: 0.5882353, a: 0.78431374}
@@ -699,7 +701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iterations: 20
   errorColor: {r: 1, g: 0, b: 0, a: 0}
-  lineRenderer: {fileID: 0}
+  lineRenderer: {fileID: 1521200584837938360}
 --- !u!1 &6831007910828570042
 GameObject:
   m_ObjectHideFlags: 0
