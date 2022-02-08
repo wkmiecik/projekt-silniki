@@ -18,12 +18,14 @@ public class ScatterPickables : MonoBehaviour
 
     // Barrels
     [Header("Barrels")]
+    GameObject hierarchyParent;
     [SerializeField] GameObject barrelPrefab;
     [SerializeField] int numberOfBarrels = 0;
     Vector2[] barrelsPoints;
 
 
     void Start() {
+        hierarchyParent = GameObject.Find("Barrels");
         ScatterBarrels();
     }
 
@@ -53,7 +55,8 @@ public class ScatterPickables : MonoBehaviour
         if (numberOfBarrels > 0) {
             barrelsPoints = GeneratePointsForBarrels();
             for (int i = 0; i < barrelsPoints.Length; i++) {
-                Instantiate(barrelPrefab, new Vector3(barrelsPoints[i].x, 7, barrelsPoints[i].y), Quaternion.Euler(90, Random.value * 360, 0));
+                GameObject barrel = Instantiate(barrelPrefab, new Vector3(barrelsPoints[i].x, 7, barrelsPoints[i].y), Quaternion.Euler(90, Random.value * 360, 0));
+                barrel.transform.SetParent(hierarchyParent.transform);
             }
         }
     }

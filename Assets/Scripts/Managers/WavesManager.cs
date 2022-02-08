@@ -20,6 +20,7 @@ public class WavesManager : MonoBehaviour
     GameObject[] spawners;
 
     // Enemy spawning variables
+    GameObject hierarchyParent;
     bool spawning = false;
     [SerializeField] float spawningDelay = 6f;
     float spawningDelayTimer;
@@ -34,6 +35,8 @@ public class WavesManager : MonoBehaviour
 
         // List of spawners
         spawners = GameObject.FindGameObjectsWithTag("Spawner");
+
+        hierarchyParent = GameObject.Find("Enemies");
     }
 
 
@@ -65,6 +68,7 @@ public class WavesManager : MonoBehaviour
     void SpawnEnemy(Transform spawner) {
         // Create enemy and add it to the list
         var obj = Instantiate(enemyPrefeb, spawner.position, spawner.rotation);
+        obj.transform.SetParent(hierarchyParent.transform);
         enemiesAlive.Add(obj);
     }
 

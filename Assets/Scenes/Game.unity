@@ -7444,7 +7444,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815456425}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.127712, y: -5.25626, z: -4.288843}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15663,8 +15663,8 @@ MonoBehaviour:
   - {fileID: 1579930508}
   underWaterDrag: 4
   underWaterAngularDrag: 3
-  airDrag: 1
-  airAngularDrag: 2
+  airDrag: 4
+  airAngularDrag: 3
   floatingPower: 5
   buoyancyOffWhenFarFromPlayer: 0
   buoyancyOffDistanceSqr: 100

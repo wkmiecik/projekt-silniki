@@ -5,14 +5,4 @@ using UnityEngine;
 public class ShipSteering : MonoBehaviour
 {
 
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 }

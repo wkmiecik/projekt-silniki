@@ -9,6 +9,8 @@ public class DestroyOnImpact : MonoBehaviour
     Rigidbody[] chunksRbs;
     Rigidbody rb;
 
+    GameObject hierarchyParent;
+
     [SerializeField] float hitForceMultiplayer = 1f;
     [SerializeField] float enableChunksCollisionDelay = .2f;
 
@@ -20,6 +22,10 @@ public class DestroyOnImpact : MonoBehaviour
         buoyantScript = GetComponent<BuoyantObj>();
         chunksRbs = GetComponentsInChildren<Rigidbody>(true);
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start() {
+        hierarchyParent = GameObject.Find("Barrels");
     }
 
 
@@ -34,7 +40,7 @@ public class DestroyOnImpact : MonoBehaviour
             rb.detectCollisions = false;
 
             foreach (var chunk in chunksRbs) {
-                chunk.transform.SetParent(null, true);
+                chunk.transform.SetParent(hierarchyParent.transform);
                 chunk.gameObject.SetActive(true);
                 chunk.AddForceAtPosition(hitForce * hitForceMultiplayer, collision.contacts[0].point);
 
