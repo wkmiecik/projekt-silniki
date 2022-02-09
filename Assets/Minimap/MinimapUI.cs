@@ -5,22 +5,20 @@ using UnityEngine.UI;
 
 public class MinimapUI : MonoBehaviour
 {
-    Image border;
-    RawImage map;
-
-    private void Start() {
-        border = GetComponent<Image>();
-        map = GetComponentInChildren<RawImage>();
-    }
+    [SerializeField] Image border;
+    [SerializeField] RawImage map;
+    [SerializeField] RawImage mask;
 
     void Update()
     {
         if (ObjectManager.Instance.player.currentMovementMode != Player.MovementMode.swimming) {
             border.enabled = false;
             map.enabled = false;
+            mask.enabled = false;
         } else {
             border.enabled = true;
             map.enabled = true;
+            mask.enabled = true;
         }
     }
 }

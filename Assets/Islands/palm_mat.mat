@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1456080671129841745
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -20,14 +7,15 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Water_mat
-  m_Shader: {fileID: -6465566751694194690, guid: 35257834dd9270a4a834ee2fb5716886, type: 3}
+  m_Name: palm_mat
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3020
-  stringTagMap: {}
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -50,10 +38,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _DetailNormalMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DisplacementTexture:
-        m_Texture: {fileID: 2800000, guid: e7c86cf92f4a0c24192e7bad11ad019f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -80,14 +64,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Texture2DAsset_c38bfe7172a043f9b65f6deca217aee2_Out_0:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Wave_f73727e0a48e4664b01150dcf57bb043_DisplacementTexture_643571619:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -103,63 +79,49 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _Amplitude: 10
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Depth_Distance: 1
-    - _Depth_Strength: 1
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _GlossMapScale: 0
+    - _GlossMapScale: 1
     - _Glossiness: 0
-    - _GlossyReflections: 0
-    - _Gravity: 9.8
-    - _IOR: 1
-    - _Metalic: 0
+    - _GlossyReflections: 1
     - _Metallic: 0
+    - _Mode: 0
     - _OcclusionStrength: 1
-    - _Parallax: 0.005
-    - _QueueControl: 0
-    - _QueueOffset: 20
+    - _Parallax: 0.02
+    - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.43
+    - _Smoothness: 0.25
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 9.8
     - _SrcBlend: 1
-    - _Steepness: 0.538
     - _Surface: 0
-    - _WaterHeight: 0
-    - _WaveFrequency: 100
-    - _WaveHeight: 10
-    - _WaveHpeed: 0.0025
-    - _WaveSpeed: 50
-    - _Wave_speed: 0.08
-    - _Waveheight: 100
-    - _Wavelength: 20
-    - _Waves_height: 23.77
-    - _Waves_speed: 1
-    - _Wavesheight: 200
-    - _Wavespeed: 0.0025
+    - _UVSec: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.26873416, g: 0.58550966, b: 0.9339623, a: 0.9647059}
-    - _Direction: {r: 1, g: 1, b: 0, a: 0}
+    - _BaseColor: {r: 0.9063317, g: 0.44791955, b: 0.26040828, a: 1}
+    - _Color: {r: 0.9063317, g: 0.4479195, b: 0.26040825, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WaveA: {r: 0, g: 1, b: 0.03, a: 900}
-    - _WaveB: {r: 0, g: 1, b: 0.02, a: 100}
-    - _WaveC: {r: 0, g: 1, b: 0.03, a: 50}
-    - _WaveD: {r: 0, g: 1, b: 0.1, a: 2}
-    - _WaveFrequency: {r: 0.00020000001, g: 0.00020000001, b: 0.00020000001, a: 0.00020000001}
-    - _Wave_Frequency: {r: 0.004, g: 0.004, b: 0, a: 0}
-    - _WavesEnabled: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &1837956607313575091
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
